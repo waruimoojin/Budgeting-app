@@ -1,0 +1,3 @@
+- Lint
+- Testing ( Mocha )
+- Build the app (docker contenair(github packages))
