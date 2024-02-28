@@ -7,12 +7,10 @@ const port = 3000;
 // DB CONNECTION
 const connectDB = async () => {
     try {
-        await mongoose.connect("mongodb://admin:pass@localhost:3000/BudgetDB", {
-            ///useNewUrlParser: true,
-            // Remove useUnifiedTopology option if using MongoDB Node.js driver 4.0.0 or newer
-            // useUnifiedTopology: true
-            serverSelectionTimeoutMS: 30000, 
-    socketTimeoutMS: 45000,
+        await mongoose.connect("mongodb://172.18.0.3:27017/BudgetDB", {
+            
+            
+           
         });
         console.log("MongoDB Connected");
     } catch (err) {
