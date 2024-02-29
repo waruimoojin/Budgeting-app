@@ -7,7 +7,7 @@ const port = 3000;
 // DB CONNECTION
 const connectDB = async () => {
     try {
-        await mongoose.connect("mongodb://172.18.0.3:27017/BudgetDB", {
+        await mongoose.connect("mongodb://localhost:27017/BudgetDB", {
             
             
            
@@ -16,10 +16,10 @@ const connectDB = async () => {
     } catch (err) {
         console.error(err);
         process.exit(1);
-    }
+    }  
 };
 
-connectDB();
+connectDB()
 
 
 
@@ -31,7 +31,7 @@ app.post('/users' ,async(req,res)=>{
 
    try {
     const Users = await users.create(req.body)
-    res.status(200).json(Product)
+    res.status(200).json(users)
    
    } catch (error) {
     console.log(error.message);
@@ -40,7 +40,7 @@ app.post('/users' ,async(req,res)=>{
    }
 
 
-})
+});
 
 app.listen(port, () => {
     console.log(`Example app listening on port 3000`);

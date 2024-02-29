@@ -11,9 +11,8 @@ services:
     volumes:
       - $HOME/$USER/database/mongo/data:/datadb
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root  
-
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD: 
   mongoexpress:
     container_name: mongoexpress
     image: mongo-express
@@ -22,10 +21,10 @@ services:
     networks:
       - budget-app-network
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_ADMINUSERNAME: 
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 
       #ME_CONFIG_MONGODB_SERVER: mongodb
-      ME_CONFIG_MONGODB_URL: mongodb://root:root@172.27.130.36:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://172.27.130.36:27017/
 
   
 networks:

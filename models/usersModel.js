@@ -8,7 +8,7 @@ const usersSch = {
 
     },
     id: {
-        type: Number,
+        type: Number
 
     }
 
