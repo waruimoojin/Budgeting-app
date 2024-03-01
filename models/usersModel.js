@@ -2,15 +2,12 @@ const mongoose = require('mongoose');
 
 
 const usersSch = {
-    name: {
+    nom: {
         type: String,
         required : [true , "Please enter your name"]
 
     },
-    id: {
-        type: Number
-
-    }
+    
 
 }
 

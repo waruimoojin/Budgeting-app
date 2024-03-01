@@ -5,25 +5,32 @@ const category = require('./models/categoryModel');
 const transactions = require('./models/transactionsModel');
 const app = express();
 const port = 3000;
+const http = require('http');
+
+
+
+
+
 
 // DB CONNECTION
-const connectDB = async () => {
+async function connectDB() {
     try {
-        await mongoose.connect("mongodb://localhost:27017/BudgetDB", {
-            
-            
-           
-        });
+        await mongoose.connect("mongodb://localhost:27017/BudgetDB", {});
         console.log("MongoDB Connected");
     } catch (err) {
         console.error(err);
         process.exit(1);
-    }  
-};
+    }
+}
 
 connectDB()
 
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 
 
 // POST
@@ -77,7 +84,21 @@ app.post('/category' ,async(req,res)=>{
  
  });
 
+ // GET
 
+ app.get('/users', async (req, res) => {
+    try {
+      const allUsers = await users.find(); 
+      res.status(200).json(allUsers);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+
+
+ const server = http.createServer(app);
 
 app.listen(port, () => {
     console.log(`Example app listening on port 3000`);
