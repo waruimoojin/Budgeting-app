@@ -40,7 +40,7 @@ app.post('/users' ,async(req,res)=>{
 
    try {
     const Users = await users.create(req.body)
-    res.status(200).json(users)
+    res.status(200).json(Users)
    
    } catch (error) {
     console.log(error.message);
@@ -90,6 +90,25 @@ app.post('/category' ,async(req,res)=>{
     try {
       const allUsers = await users.find(); 
       res.status(200).json(allUsers);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ message: error.message });
+    }
+  });
+  app.get('/transactions', async (req, res) => {
+    try {
+      const allTransactions = await transactions.find(); 
+      res.status(200).json(allTransactions);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.get('/category', async (req, res) => {
+    try {
+      const allCategory = await category.find(); 
+      res.status(200).json(allCategory);
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ message: error.message });
