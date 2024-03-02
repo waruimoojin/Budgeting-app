@@ -10,7 +10,7 @@ const App = () => {
   });
 
   const [category, setCategory] = useState([]);
-  const [nouvelCategory, setnouvelCategory] = useState({
+  const [nouvelCategory, setNouvelCategory] = useState({
     name: '',
     idcategory: ''
     // Ajoutez d'autres champs en fonction de votre modèle
@@ -67,7 +67,7 @@ const App = () => {
       ...nouvelUtilisateur,
       [e.target.name]: e.target.value,
     });
-    setnouvelCategory({
+    setNouvelCategory({
       ...nouvelCategory,
       [e.target.name]: e.target.value,
     });
