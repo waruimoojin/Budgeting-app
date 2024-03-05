@@ -7,49 +7,52 @@ const AddUser = () => {
 
   const [nouvelUtilisateur, setNouvelUtilisateur] = useState({
     nom: ''
-    // Ajoutez d'autres champs en fonction de votre modèle
+    // Add other fields based on your model
   });
 
   useEffect(() => {
-    // Effectue une requête GET pour récupérer tous les utilisateurs
-    axios.get('http://localhost:3000/users')
-      .then(response => {
-        // ... (traitement des données si nécessaire)
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des utilisateurs:', error);
-      });
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/users');
+        console.log(response.data);
+        // Handle data if needed
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   const handleInputChange = (e) => {
-    setNouvelUtilisateur({
-      ...nouvelUtilisateur,
+    setNouvelUtilisateur((prevUser) => ({
+      ...prevUser,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
-  const ajouterEntite = () => {
-    // Effectue une requête POST pour ajouter un nouvel utilisateur
-    axios.post('http://localhost:3000/users', nouvelUtilisateur)
-      .then(response => {
-        console.log('Entité ajoutée avec succès:', response.data);
-        // Rafraîchit la liste des utilisateurs
-        // ...
+  const ajouterEntite = async () => {
+    try {
+      // Use async/await for cleaner asynchronous code
+      const response = await axios.post('http://localhost:3000/users', nouvelUtilisateur);
+      console.log('Entity added successfully:', response.data);
+      // Refresh the list of users
+      // ...
 
-        // Redirection vers la page souhaitée (remplacez '/budget' par votre chemin désiré)
-        navigate('/budget');
-      })
-      .catch(error => {
-        console.error('Erreur lors de l\'ajout de l\'entité:', error);
-      });
+      // Redirect to the desired page (replace '/budget' with your desired path)
+      navigate('/budget');
+    } catch (error) {
+      console.error('Error adding entity:', error);
+    }
   };
 
   return (
     <div>
       <h2>Ajouter une Entité</h2>
       <div>
-        <label>Nom Utilisateur:
-          <input type="text" name="nom" onChange={handleInputChange} />
+        <label>
+          Nom Utilisateur:
+          <input type="text" name="nom" value={nouvelUtilisateur.nom} onChange={handleInputChange} />
         </label>
       </div>
       <button onClick={ajouterEntite}>Ajouter Entité</button>

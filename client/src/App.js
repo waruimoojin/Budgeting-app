@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import BudgetPage from './pages/BudgetPage';
 import TransactionsPage from './pages/TransactionsPage';
 
+
 const App = () => {
   return (
     <Router>
@@ -18,3 +19,4 @@ const App = () => {
 };
 
 export default App;
+
