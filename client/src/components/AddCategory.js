@@ -1,30 +1,66 @@
-// AddCategory.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const AddCategory = ({ onAddCategory }) => {
-  const [name, setName] = useState('');
-  const [idcategory, setIdCategory] = useState('');
+const App = () => {
+  const [category, setCategory] = useState([]);
+  const [nouvelCategory, setNouvelCategory] = useState({
+    name: '',
+    idcategory: ''
+    // Ajoutez d'autres champs en fonction de votre modèle
+  });
 
-  const handleAddCategory = () => {
-    onAddCategory({ name, idcategory });
+  useEffect(() => {
+    axios.get('http://localhost:3000/category')
+      .then(response => {
+        setCategory(response.data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
+      });
+  }, []);
+
+  const ajouterEntite = () => {
+    axios.post('http://localhost:3000/category', nouvelCategory)
+      .then(categoryResponse => {
+        console.log('Catégorie ajoutée avec succès:', categoryResponse.data);
+        // Rafraîchit la liste des catégories
+        setCategory([...category, categoryResponse.data]);
+      })
+      .catch(categoryError => {
+        console.error('Erreur lors de l\'ajout de la catégorie:', categoryError.response.data);
+        console.log('Réponse du serveur:', categoryError.response);
+      });
   };
 
-  
+  const handleInputChange = (e) => {
+    setNouvelCategory({
+      ...nouvelCategory,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <div>
+      {/* ... (votre code existant) */}
+
+      <h2>Ajouter une Entité</h2>
+      <div>
+
+      </div>
+
       <h2>Ajouter une Catégorie</h2>
       <div>
         <label>Nom Catégorie:
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <input type="text" name="name" onChange={handleInputChange} />
         </label>
         <label>ID Catégorie:
-          <input type="text" value={idcategory} onChange={(e) => setIdCategory(e.target.value)} />
+          <input type="text" name="idcategory" onChange={handleInputChange} />
         </label>
       </div>
-      <button onClick={handleAddCategory}>Ajouter Catégorie</button>
+
+      <button onClick={ajouterEntite}>Ajouter Entité</button>
     </div>
   );
 };
 
-export default AddCategory;
+export default App;

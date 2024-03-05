@@ -7,11 +7,6 @@ const app = express();
 const port = 3000;
 const http = require('http');
 
-
-
-
-
-
 // DB CONNECTION
 async function connectDB() {
     try {
