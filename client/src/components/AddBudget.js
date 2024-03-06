@@ -1,44 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const App = () => {
-  const [category, setCategory] = useState([]);
-  const [nouvelCategory, setNouvelCategory] = useState({
+
+
+
+
+const AddBudget = () => {
+  const navigate = useNavigate();
+
+  const [budget, setbudget] = useState([]);
+  const [nouvelbudget, setNouvelbudget] = useState({
     name: '',
-    idcategory: ''
+    idbudget: ''
     // Ajoutez d'autres champs en fonction de votre modèle
   });
 
   useEffect(() => {
-    axios.get('http://localhost:3000/category')
+    axios.get('http://localhost:3000/budget')
       .then(response => {
-        setCategory(response.data);
+        setbudget(response.data);
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des utilisateurs:', error);
       });
   }, []);
-
+  
   const ajouterEntite = () => {
-    axios.post('http://localhost:3000/category', nouvelCategory)
-      .then(categoryResponse => {
-        console.log('Catégorie ajoutée avec succès:', categoryResponse.data);
+    axios.post('http://localhost:3000/budget', nouvelbudget)
+      .then(budgetResponse => {
+        console.log('Catégorie ajoutée avec succès:', budgetResponse.data);
         // Rafraîchit la liste des catégories
-        setCategory([...category, categoryResponse.data]);
+        setbudget([...budget, budgetResponse.data]);
+        navigate('/transactions')
       })
-      .catch(categoryError => {
-        console.error('Erreur lors de l\'ajout de la catégorie:', categoryError.response.data);
-        console.log('Réponse du serveur:', categoryError.response);
+      
+      .catch(budgetError => {
+        console.error('Erreur lors de l\'ajout de la catégorie:', budgetError.response.data);
+        console.log('Réponse du serveur:', budgetError.response);
       });
   };
 
   const handleInputChange = (e) => {
-    setNouvelCategory({
-      ...nouvelCategory,
+    setNouvelbudget({
+      ...nouvelbudget,
       [e.target.name]: e.target.value,
     });
-  };
 
+    
+  };
+  
   return (
     <div>
       {/* ... (votre code existant) */}
@@ -48,13 +59,13 @@ const App = () => {
 
       </div>
 
-      <h2>Ajouter une Catégorie</h2>
+      <h2>Ajouter un budget</h2>
       <div>
-        <label>Nom Catégorie:
+        <label>Nom budget:
           <input type="text" name="name" onChange={handleInputChange} />
         </label>
-        <label>ID Catégorie:
-          <input type="text" name="idcategory" onChange={handleInputChange} />
+        <label>Montant:
+          <input type="text" name="amount" onChange={handleInputChange} />
         </label>
       </div>
 
@@ -63,4 +74,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default AddBudget;

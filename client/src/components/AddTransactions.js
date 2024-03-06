@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 
 
 const App = () => {
+  const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
   const [nouvelTransaction, setNouvelTransaction] = useState({
-    usersid: '',
-    amount: '',
-    type: '',
-    idtransaction: ''
+    name: '',
+    amount: ''
+ 
     // Ajoutez d'autres champs en fonction de votre modèle
   });
 
@@ -30,7 +30,7 @@ const App = () => {
         // Rafraîchit la liste des transactions
         setTransactions([...transactions, transactionResponse.data]);
             // Redirection vers la page souhaitée (remplacez '/budget' par votre chemin désiré)
-           
+            navigate('/transactions');
       })
       .catch(transactionError => {
         console.error('Erreur lors de l\'ajout de la transaction:', transactionError.response.data);
@@ -49,22 +49,18 @@ const App = () => {
     <div>
       {/* ... (votre code existant) */}
 
-      <h2>Ajouter une Entité</h2>
+     
 
-      <h2>Ajouter une Transaction</h2>
+      <h2>Add new expense</h2>
       <div>
-        <label>ID Utilisateur:
-          <input type="text" name="usersid" onChange={handleInputChange} />
+        <label>Expense name:
+          <input type="text" name="name" onChange={handleInputChange} />
         </label>
-        <label>Montant:
+        <label>Amount:
           <input type="text" name="amount" onChange={handleInputChange} />
         </label>
-        <label>Type:
-          <input type="text" name="type" onChange={handleInputChange} />
-        </label>
-        <label>ID Transaction:
-          <input type="text" name="idtransaction" onChange={handleInputChange} />
-        </label>
+       
+        
       </div>
 
       <button onClick={ajouterEntite}>Ajouter Entité</button>

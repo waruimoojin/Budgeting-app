@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 
 const transactionsSch = {
-    usersid: {
-        type: Number,
-       
+    name: {
+        type: String,
+        required : [true , "Please enter the expense name"]
 
     },
 
@@ -13,16 +13,7 @@ const transactionsSch = {
        
 
     },
-    type: {
-        type: String,
-        required : [true , "Please enter your name"]
-
-    },
-    idtransaction: {
-        type: Number
-
-    }
-
+  
 }
 
 const transactions = mongoose.model('transactions',transactionsSch);

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const users = require('./models/usersModel');
 const category = require('./models/categoryModel');
+const budget = require('./models/budgetModel');
 const transactions = require('./models/transactionsModel');
 const app = express();
 const port = 3000;
@@ -40,6 +41,16 @@ app.post('/users', async (req, res) => {
   }
 });
 
+app.post('/budget', async (req, res) => {
+  try {
+    const Budget = await budget.create(req.body)
+    res.status(200).json(Budget)
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message })
+  }
+});
+
 app.post('/category', async (req, res) => {
   try {
     const Category = await category.create(req.body)
@@ -70,6 +81,16 @@ app.get('/users', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+app.get('/budget', async (req, res) => {
+  try {
+    const allBudget = await budget.find();
+    res.status(200).json(allBudget);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 app.get('/transactions', async (req, res) => {
   try {

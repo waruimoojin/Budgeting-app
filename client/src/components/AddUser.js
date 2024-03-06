@@ -14,7 +14,7 @@ const AddUser = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('http://localhost:3000/users');
-        console.log(response.data);
+        
         // Handle data if needed
       } catch (error) {
         console.error('Error fetching users:', error);
