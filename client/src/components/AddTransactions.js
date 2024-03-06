@@ -59,8 +59,7 @@ const App = () => {
         <label>Amount:
           <input type="text" name="amount" onChange={handleInputChange} />
         </label>
-       
-        
+      
       </div>
 
       <button onClick={ajouterEntite}>Ajouter Entité</button>
