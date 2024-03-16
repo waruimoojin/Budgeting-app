@@ -21,8 +21,8 @@ function Login() {
      
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('token', data.token); // Stocker le token localement
-        localStorage.setItem('userId', data.userId); // Stocker l'ID de l'utilisateur localement
+        localStorage.setItem('token', data.token); 
+        localStorage.setItem('userId', data.userId); 
         
         navigate('/budget');
       } else {
