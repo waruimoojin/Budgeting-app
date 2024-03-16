@@ -1,17 +1,15 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const jwt = require('jsonwebtoken'); // Import JWT library
 const users = require('./models/usersModel');
 const category = require('./models/categoryModel');
 const budget = require('./models/budgetModel');
 const transactions = require('./models/transactionsModel');
 const app = express();
-const path = require('path');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-
-const indexRoute = require('../client/routes/index'); // Chemin relatif pour accéder à index.js depuis App.js
-const authRoute = require('../client/routes/auth'); // Chemin relatif pour accéder à auth.js depuis App.js
 const port = 3000;
+const bcrypt = require('bcrypt');
+const router = express.Router()
+const { authenticateToken } = require('../middleware/auth');
 
 
 
@@ -27,69 +25,120 @@ async function connectDB() {
     process.exit(1);
   }
 }
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.use(session({ secret: 'your-secret-key', resave: true, saveUninitialized: true }));
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Set up view engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '..','client','views'));
-// app.js
-
-// Routes
-app.use('/', indexRoute);
-app.use('/auth', authRoute);
-
-// Servir les fichiers statiques de l'application React depuis le répertoire client/build
-app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
-
-// Rediriger toutes les routes non définies vers l'application React
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'client', 'build', 'main.js'));
-  res.redirect('http://localhost:3001/budget');
-
-
-});
-
-
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '..','client', 'src', 'components' ,'Login.js'));
-});
-
-// Route pour servir la page d'inscription
-app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, '..','client', 'src', 'components' ,'Register.js'));
-});
-
-// Démarrer le serveur Node.js sur le port 3000
-
-
-
-
-connectDB()
+connectDB();
 
 app.use((_req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Include Authorization header
   next();
 });
+
+
+
+
+router.get("/budget", authenticateToken, async (req, res) => {
+  try {
+    const { user } = req;
+    const budgets = await budget.find({ user: user._id });
+    res.status(200).send(budgets);
+  } catch (error) {
+    console.error('Error fetching budgets:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 
 // POST
 app.use(express.json());
 
-app.post('/users', async (req, res) => {
+// POST route for user registration
+app.post('/api/register', async (req, res) => {
   try {
-    const Users = await users.create(req.body)
-    res.status(200).json(Users)
+    const { email, password } = req.body;
+
+    // Vérifier si l'utilisateur existe déjà dans la base de données
+    const existingUser = await users.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // Hacher le mot de passe avant de l'enregistrer dans la base de données
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Créer un nouvel utilisateur avec le mot de passe haché
+    const newUser = await users.create({ email, password: hashedPassword });
+
+    // Générer le jeton JWT pour le nouvel utilisateur
+    const token = jwt.sign({ userId: newUser._id, email: newUser.email }, 'your_secret_key');
+
+    // Envoyer le jeton JWT en réponse
+    res.status(201).json({ token });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message })
+    console.error('Registration failed:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-app.post('/budget', async (req, res) => {
+// POST route for user registration
+app.post('/users', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Vérifier si l'utilisateur existe déjà dans la base de données
+    const existingUser = await users.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // Hacher le mot de passe avant de l'enregistrer dans la base de données
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Créer un nouvel utilisateur avec le mot de passe haché
+    const newUser = await users.create({ email, password: hashedPassword });
+
+    // Générer le jeton JWT pour le nouvel utilisateur
+    const token = jwt.sign({ userId: newUser._id, email: newUser.email }, 'your_secret_key');
+
+    // Envoyer le jeton JWT en réponse
+    res.status(201).json({ token });
+  } catch (error) {
+    console.error('Registration failed:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await users.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Vérifier le mot de passe en utilisant bcrypt.compare
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Si le mot de passe correspond, renvoyer l'userId et le token JWT
+    const token = jwt.sign({ userId: user._id, email: user.email }, 'your_secret_key');
+    res.status(200).json({ userId: user._id, token }); // Renvoyer l'userId avec le token
+  } catch (error) {
+    console.error('Login failed:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+app.post('/budget', authenticateToken, async (req, res) => {
   try {
     const Budget = await budget.create(req.body)
     res.status(200).json(Budget)
@@ -129,7 +178,7 @@ app.get('/users', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-app.get('/budget', async (req, res) => {
+app.get('/budget', authenticateToken, async (req, res) =>  {
   try {
     const allBudget = await budget.find();
     res.status(200).json(allBudget);
@@ -161,5 +210,5 @@ app.get('/category', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port 3001`);
+  console.log(`Example app listening on port 3000`);
 });

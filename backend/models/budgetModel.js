@@ -1,19 +1,11 @@
 const mongoose = require('mongoose');
 
+const budgetSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Référence vers l'utilisateur auquel ce budget appartient
+  name: { type: String, required: true },
+  amount: { type: Number, required: true },
+});
 
-const budgetSch = {
-    name: {
-        type: String,
-        required : [true , "Please enter a budget name"]
+const Budget = mongoose.model('Budget', budgetSchema);
 
-    },
-    amount: {
-        type: Number
-
-    }
-
-}
-
-const budget = mongoose.model('budget', budgetSch);
-
-module.exports = budget;
+module.exports = Budget;
