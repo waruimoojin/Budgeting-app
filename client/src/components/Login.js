@@ -22,7 +22,7 @@ function Login() {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('token', data.token); 
-        localStorage.setItem('userId', data.userId); 
+        localStorage.setItem('userId', data.userId); //commentaire
         
         navigate('/budget');
       } else {
