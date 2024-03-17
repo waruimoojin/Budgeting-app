@@ -34,8 +34,24 @@ app.use((_req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Include Authorization header
   next();
 });
+app.options('*', (_req, res) => {
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Include Authorization header
+  res.sendStatus(200);
+});
 
-
+app.delete('/transactions/:id', async (req, res) => {
+  try {
+    const deletedTransaction = await transactions.findByIdAndDelete(req.params.id);
+    if (!deletedTransaction) {
+      return res.status(404).json({ message: 'Transaction not found' });
+    }
+    res.status(200).json({ message: 'Transaction deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 
 router.get("/budget", authenticateToken, async (req, res) => {
