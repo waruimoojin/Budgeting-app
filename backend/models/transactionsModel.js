@@ -1,21 +1,16 @@
 const mongoose = require('mongoose');
 
-
-const transactionsSch = {
+const transactionsSchema = new mongoose.Schema({
+    expenseid: mongoose.Schema.Types.ObjectId, // Ajout du champ _id
     name: {
         type: String,
-        required : [true , "Please enter the expense name"]
-
+        required: [true, "Please enter the expense name"]
     },
-
     amount: {
         type: Number,
-       
+    }
+});
 
-    },
-  
-}
+const Transaction = mongoose.model('Transaction', transactionsSchema);
 
-const transactions = mongoose.model('transactions',transactionsSch);
-
-module.exports = transactions;
+module.exports = Transaction;
