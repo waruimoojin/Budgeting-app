@@ -1,6 +1,7 @@
-// components/Register.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Importez la feuille de style Bootstrap
+import loginImage from './pngegg.png';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -32,25 +33,46 @@ function Register() {
   };
 
   return (
-    <div className="register-container">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Register</button>
-      </form>
+    <div className="container-fluid d-flex flex-column justify-content-between" style={{ minHeight: '100vh' }}>
+      <div className="row justify-content-center align-items-center flex-grow-1">
+        <div className="col-lg-5"> {/* Réduire la largeur de la colonne */}
+          <div className="register-container" style={{ maxWidth: '400px' }}> {/* Ajouter une largeur maximale */}
+            <h2>Register</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  className="form-control"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  className="form-control"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">Register</button>
+            </form>
+          </div>
+        </div>
+        <div className="col-lg-7 d-flex justify-content-end order-lg-1 mt-4"> {/* Ajout de la classe mt-4 pour ajouter une marge en haut */}
+          <div className="image-container" style={{ marginRight: '20px' }}>
+            <img src={loginImage} alt="Register" className="img-fluid" style={{ width: '80%' }} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

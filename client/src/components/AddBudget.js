@@ -1,13 +1,13 @@
-// AddBudget.js
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import budgetImage from './pngegg2.png'; // Importez votre image à partir du même répertoire
 
 const AddBudget = () => {
   const navigate = useNavigate();
-  
+
   const fetchBudgets = useCallback(() => {
-    const token = localStorage.getItem('token'); // Récupérer le token localement
+    const token = localStorage.getItem('token');
     axios.get('http://localhost:3000/budget', {
       headers: {
         Authorization: `Bearer ${token}`
@@ -27,14 +27,14 @@ const AddBudget = () => {
     amount: '',
     userId: ''
   });
-  
+
   useEffect(() => {
     fetchBudgets();
   }, [fetchBudgets]);
-  
+
   useEffect(() => {
-    const userId = localStorage.getItem('userId'); // Récupérer l'ID de l'utilisateur localement
-    if (userId) { // Vérifier si l'ID de l'utilisateur est défini et non vide
+    const userId = localStorage.getItem('userId');
+    if (userId) {
       setNouvelBudget(prevState => ({
         ...prevState,
         userId: userId
@@ -43,7 +43,7 @@ const AddBudget = () => {
   }, []);
 
   const ajouterBudget = () => {
-    const token = localStorage.getItem('token'); // Récupérer le token localement
+    const token = localStorage.getItem('token');
     const newBudget = {
       ...nouvelBudget
     };
@@ -71,21 +71,35 @@ const AddBudget = () => {
     });
   };
 
-  console.log(nouvelBudget);
-
   return (
-    <div>
-      <h2>Ajouter un budget</h2>
-      <div>
-        <label>Nom du budget:
-          <input type="text" name="name" onChange={handleInputChange} />
-        </label>
-        <label>Montant:
-          <input type="number" name="amount" onChange={handleInputChange} />
-        </label>
+    <div className="container-fluid d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+      <div className="row">
+        <div className="col-md-6">
+          <h1 className="display-1 fw-bold">Welcome back</h1>
+          <p className="display-6 ">Personal budgeting is the secret to financial freedom. Create a budget to get started!</p>
+          <div className="card">
+            <div className="card-body">
+              <h3 className="card-title">Create budget</h3>
+              <div className="mb-3 row">
+                <label htmlFor="name" className="col-sm-2 col-form-label">Budget Name:</label>
+                <div className="col-sm-10">
+                  <input type="text" className="form-control" id="name" name="name" placeholder="e.g. Groceries" onChange={handleInputChange} />
+                </div>
+              </div>
+              <div className="mb-3 row">
+                <label htmlFor="amount" className="col-sm-2 col-form-label">Amount:</label>
+                <div className="col-sm-10">
+                  <input type="number" className="form-control" id="amount" name="amount" placeholder="e.g. 500 DH" onChange={handleInputChange} />
+                </div>
+              </div>
+              <button className="btn btn-primary" onClick={ajouterBudget}>Create budget</button>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <img src={budgetImage} alt="Budget dImage" className="img-fluid"  style={{ width: '90%'}}/>
+        </div>
       </div>
-
-      <button onClick={ajouterBudget}>Ajouter Budget</button>
     </div>
   );
 };

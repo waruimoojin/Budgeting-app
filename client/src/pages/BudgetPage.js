@@ -16,7 +16,7 @@ const BudgetPage = () => {
 
   return (
     <div>
-      <h2>Page d'accueil</h2>
+    
       <AddBudget onAddBudget={ajouterEntite} />
     </div>
   );
