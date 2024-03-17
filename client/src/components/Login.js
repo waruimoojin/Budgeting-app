@@ -1,7 +1,7 @@
-// Login.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate ,Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Importez la feuille de style Bootstrap
+import loginImage from './pngegg.png';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -16,14 +16,13 @@ function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }), 
+        body: JSON.stringify({ email, password }),
       });
-     
+
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('token', data.token); 
-        localStorage.setItem('userId', data.userId); //commentaire
-        
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.userId);
         navigate('/budget');
       } else {
         alert('Login failed:', data.message);
@@ -32,27 +31,51 @@ function Login() {
       console.error('Login failed:', error);
     }
   };
- 
+
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className="container-fluid d-flex flex-column justify-content-between" style={{ minHeight: '100vh' }}>
+      <div className="row justify-content-center align-items-center flex-grow-1">
+        <div className="col-lg-6 text-start">
+          <div className="login-container" style={{ maxWidth: '400px' }}>
+            <h2>Login</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  className="form-control"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  className="form-control"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">Login</button>
+              
+            </form>
+            <p className="mt-3">Don't have an account? <Link to="/register">Register here</Link>
+            </p>
+          </div>
+        </div>
+        <div className="col-lg-6 d-flex justify-content-end order-lg-1 mt-4">
+          <div className="image-container" style={{ marginRight: '20px' }}>
+            <img src={loginImage} alt="Login" className="img-fluid" style={{ width: '90%'}} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
