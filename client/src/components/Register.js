@@ -20,7 +20,7 @@ function Register() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log('User registered successfully:', data);
+        alert('User registered successfully:', data);
         navigate('/login'); // Redirect to the login page after registration
       } else {
         console.error('Registration failed:', data.message);

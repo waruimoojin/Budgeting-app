@@ -4,10 +4,16 @@ import ExpenseItem from './ExpenseItem';
 
 const RecentExpenses = () => {
   const [recentExpenses, setRecentExpenses] = useState([]);
+  
 
   useEffect(() => {
     fetchRecentExpenses();
+    
+  
   }, []);
+
+ 
+
 
   const fetchRecentExpenses = async () => {
     try {
@@ -21,7 +27,9 @@ const RecentExpenses = () => {
       console.error('Erreur lors de la récupération des dépenses récentes:', error);
     }
   };
+  
 
+ 
   const handleDeleteExpense = async (expenseId) => {
     try {
       await axios.delete(`http://localhost:3000/transactions/${expenseId}`, {
@@ -33,8 +41,13 @@ const RecentExpenses = () => {
     } catch (error) {
       console.error('Erreur lors de la suppression de la dépense:', error);
     }
+    
   };
 
+  useEffect(() => {
+    fetchRecentExpenses();
+     // Mettre à jour les dépenses après chaque ajout ou suppression
+  }, [recentExpenses]);
 
 
   return (

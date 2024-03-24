@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddTransaction from '../components/AddTransactions';
 import RecentExpenses from '../components/RecentExpenses';
+import ExpenseItem from '../components/ExpenseItem'; // Importez le composant ExpenseItem
 
 const TransactionsPage = () => {
   
   const [transactions, setTransactions] = useState([]);
 
+  // Yah I am here
   useEffect(() => {
     // Code pour charger les transactions récentes depuis le serveur...
   }, []);
@@ -31,8 +33,15 @@ const TransactionsPage = () => {
       <AddTransaction />
      
       {/* Ajout du composant RecentExpenses en lui passant la fonction de suppression */}
-      
       <RecentExpenses onDeleteExpense={handleDeleteExpense} />
+
+      {/* Boucle de rendu des transactions avec les détails du budget */}
+      {transactions.map(transaction => (
+        <ExpenseItem 
+         // Passer les détails du budget à ExpenseItem
+          handleDelete={handleDeleteExpense} 
+        />
+      ))}
     </div>
   );
 };

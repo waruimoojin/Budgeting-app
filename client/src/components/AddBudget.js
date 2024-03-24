@@ -8,12 +8,14 @@ const AddBudget = () => {
 
   const fetchBudgets = useCallback(() => {
     const token = localStorage.getItem('token');
+    // here its calling
     axios.get('http://localhost:3000/budget', {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
+        console.log(response.data)
         setBudget(response.data);
       })
       .catch(error => {
@@ -32,15 +34,18 @@ const AddBudget = () => {
     fetchBudgets();
   }, [fetchBudgets]);
 
-  useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      setNouvelBudget(prevState => ({
-        ...prevState,
-        userId: userId
-      }));
-    }
-  }, []);
+  // this is actually not needed, you can send userId in backend rather putting
+  // useEffect which cause extra re render
+  // now come to you backend
+  // useEffect(() => {
+  //   const userId = localStorage.getItem('userId');
+  //   if (userId) {
+  //     setNouvelBudget(prevState => ({
+  //       ...prevState,
+  //       userId: userId
+  //     }));
+  //   }
+  // }, []);
 
   const ajouterBudget = () => {
     const token = localStorage.getItem('token');

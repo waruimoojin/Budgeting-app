@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const TransactionsPage = () => {
   const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
   const [nouvelTransaction, setNouvelTransaction] = useState({
     name: '',
     amount: '',
-    budgetId: ''
+    expenseid: ''
   });
   const [budgets, setBudgets] = useState([]);
   const [userBudgets, setUserBudgets] = useState([]);
@@ -20,8 +19,9 @@ const TransactionsPage = () => {
 
   useEffect(() => {
     fetchBudgets();
-    // Ajouter cet appel pour récupérer les transactions au chargement de la page
+    
   }, []);
+
 
   const fetchBudgets = () => {
     axios.get('http://localhost:3000/budget', {
@@ -32,31 +32,40 @@ const TransactionsPage = () => {
       .then(response => {
         const userBudgets = response.data.filter(budget => budget.userId === localStorage.getItem('userId'));
         setBudgets(userBudgets);
-        setUserBudgets(userBudgets);
+        setUserBudgets(response.data);
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des budgets:', error);
       });
   };
-
   
+
+
   const ajouterEntite = async () => {
     try {
-      const transactionResponse = await axios.post('http://localhost:3000/transactions', nouvelTransaction, {
+      const transactionData = {
+        ...nouvelTransaction,
+        expenseid: nouvelTransaction.budgetId,
+        userId: localStorage.getItem('userId') // Inclure l'ID de l'utilisateur
+      };
+  
+      const transactionResponse = await axios.post('http://localhost:3000/transactions', transactionData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
   
       console.log('Transaction ajoutée avec succès:', transactionResponse.data);
-      setTransactions([...transactions, transactionResponse.data]); // Mettre à jour l'état des transactions
-      setNouvelTransaction({ name: '', amount: '', budgetId: '' }); // Réinitialiser le formulaire
+      setTransactions([...transactions, transactionResponse.data]);
+      setNouvelTransaction({ name: '', amount: '', budgetId: '' });
       navigate('/transactions');
     } catch (transactionError) {
       console.error('Erreur lors de l\'ajout de la transaction:', transactionError.response.data);
       console.log('Réponse du serveur:', transactionError.response);
     }
   };
+  
+  
   
 
   const ajouterNouveauBudget = async () => {
@@ -66,20 +75,19 @@ const TransactionsPage = () => {
         ...nouvelBudget,
         userId: userId
       };
-  
+
       const budgetResponse = await axios.post('http://localhost:3000/budget', budgetData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-  
+
       console.log('Nouveau budget ajouté avec succès:', budgetResponse.data);
       fetchBudgets();
     } catch (error) {
       console.error('Erreur lors de l\'ajout du nouveau budget:', error.response.data);
     }
   };
-  
 
   const handleInputChange = (e) => {
     setNouvelTransaction({
@@ -87,6 +95,7 @@ const TransactionsPage = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleNewBudgetChange = (e) => {
     setNouvelBudget({
       ...nouvelBudget,
@@ -98,18 +107,19 @@ const TransactionsPage = () => {
     <div>
       <h2>Add new expense</h2>
       <div>
-        <label>Expense name:
-          <input type="text" name="name" onChange={handleInputChange} />
-        </label>
-        <label>Amount:
-          <input type="text" name="amount" onChange={handleInputChange} />
-        </label>
-        <label>Category:
-          <select name="budgetId" onChange={handleInputChange}>
-            <option value="">Select Budget</option>
-            {budgets.map(budget => (
-              <option key={budget._id} value={budget._id}>{budget.name} - {budget.amount}</option>
-            ))}
+      
+  <label>Expense name:
+    <input type="text" name="name" onChange={handleInputChange} />
+  </label>
+  <label>Amount:
+    <input type="text" name="amount" onChange={handleInputChange} />
+  </label>
+  <label>Category:
+    <select name="budgetId" onChange={handleInputChange}>
+      <option value="">Select Budget</option>
+      {budgets.map(budget => (
+        <option key={budget._id} value={budget._id}>{budget.name} - {budget.amount}</option>
+      ))}
           </select>
         </label>
       </div>

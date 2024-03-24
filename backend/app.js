@@ -13,7 +13,7 @@ const { authenticateToken } = require('../middleware/auth');
 
 
 
-
+console.log("WFT")
 
 // DB CONNECTION
 async function connectDB() {
@@ -55,15 +55,57 @@ app.delete('/transactions/:id', async (req, res) => {
 
 
 router.get("/budget", authenticateToken, async (req, res) => {
+  console.log("I AM BEING CALLEDDDDDD")
+  // it should show
+  // this api is not calling???? it should show console
+  // do have other api?
   try {
     const { user } = req;
-    const budgets = await budget.find({ user: user._id });
+    // can you call this API and see the console what user is showing okay
+    console.log("USER => ", user)
+    // refresh your frontend and look at second termanin (MongoDB connected)
+    // is it showing?
+    // your budget mode has userId not user
+    const budgets = await budget.find({ userId: user._id });
     res.status(200).send(budgets);
   } catch (error) {
     console.error('Error fetching budgets:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+router.get("/transactions", authenticateToken, async (req, res) => {
+  console.log("ME TGOOOOOOO")
+  try {
+    const { user } = req;
+    // refresh page and see is it now getting correct transactions
+    const transactionsWithBudget = await transactions.find({ userId: user._id })
+      .populate('budgetId'); // Assurez-vous que le champ 'budgetId' dans votre modèle de transaction est une référence à votre modèle de budget
+
+    res.status(200).send(transactionsWithBudget);
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+// Route pour récupérer les détails d'un budget spécifique
+router.get('/budget/:id', async (req, res) => {
+  console.log("OKKKKKKKKKKKKKKKKKKKKK")
+  try {
+    const budgetId = req.params.id;
+    const budget = await Budget.findById(budgetId);
+    if (!budget) {
+      return res.status(404).json({ message: 'Budget not found' });
+    }
+    res.status(200).json(budget);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du budget:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 
 
@@ -156,6 +198,7 @@ app.post('/api/login', async (req, res) => {
 
 app.post('/budget', authenticateToken, async (req, res) => {
   try {
+    console.log("I SHOULD CALL, OR I AM OVERIDING")
     const Budget = await budget.create(req.body)
     res.status(200).json(Budget)
   } catch (error) {
@@ -174,7 +217,7 @@ app.post('/category', async (req, res) => {
   }
 });
 
-app.post('/transactions', async (req, res) => {
+app.post('/transactions',authenticateToken, async (req, res) => {
   try {
     const Transaction = await transactions.create(req.body)
     res.status(200).json(Transaction)
@@ -183,6 +226,7 @@ app.post('/transactions', async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 });
+
 
 // GET
 app.get('/users', async (req, res) => {
@@ -196,7 +240,9 @@ app.get('/users', async (req, res) => {
 });
 app.get('/budget', authenticateToken, async (req, res) =>  {
   try {
-    const allBudget = await budget.find();
+    const {user} =  req;
+    console.log("HEREEEEEEEE", user)
+    const allBudget = await budget.find({userId: user.userId});
     res.status(200).json(allBudget);
   } catch (error) {
     console.log(error.message);
@@ -205,9 +251,26 @@ app.get('/budget', authenticateToken, async (req, res) =>  {
 });
 
 
-app.get('/transactions', async (req, res) => {
+
+app.get('/budget/:id', authenticateToken, async (req, res) => {
   try {
-    const allTransactions = await transactions.find();
+    const budgetId = req.params.id;
+    const budgetDetails = await budget.findById(budgetId);
+    if (!budgetDetails) {
+      return res.status(404).json({ message: 'Budget not found' });
+    }
+    res.status(200).json(budgetDetails);
+  } catch (error) {
+    console.error('Error fetching budget details:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+app.get('/transactions', authenticateToken, async (req, res) => {
+  try {
+    const {user} =  req;
+    const allTransactions = await transactions.find({userId: user.userId});
     res.status(200).json(allTransactions);
   } catch (error) {
     console.log(error.message);
