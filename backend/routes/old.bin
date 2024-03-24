@@ -1,0 +1,133 @@
+// POST
+app.use(express.json());
+
+// POST route for user registration
+app.post('/api/register', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Vérifier si l'utilisateur existe déjà dans la base de données
+    const existingUser = await users.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // Hacher le mot de passe avant de l'enregistrer dans la base de données
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Créer un nouvel utilisateur avec le mot de passe haché
+    const newUser = await users.create({ email, password: hashedPassword });
+
+    // Générer le jeton JWT pour le nouvel utilisateur
+    const token = jwt.sign({ userId: newUser._id, email: newUser.email }, 'your_secret_key');
+
+    // Envoyer le jeton JWT en réponse
+    res.status(201).json({ token });
+  } catch (error) {
+    console.error('Registration failed:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await users.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Vérifier le mot de passe en utilisant bcrypt.compare
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Si le mot de passe correspond, renvoyer l'userId et le token JWT
+    const token = jwt.sign({ userId: user._id, email: user.email }, 'your_secret_key');
+    res.status(200).json({ userId: user._id, token }); // Renvoyer l'userId avec le token
+  } catch (error) {
+    console.error('Login failed:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// so in future u can refer this
+
+router.get("/budget", authenticateToken, async (req, res) => {
+  console.log("I AM BEING CALLEDDDDDD")
+  // it should show
+  // this api is not calling???? it should show console
+  // do have other api?
+  try {
+    const { user } = req;
+    // can you call this API and see the console what user is showing okay
+    console.log("USER => ", user)
+    // refresh your frontend and look at second termanin (MongoDB connected)
+    // is it showing?
+    // your budget mode has userId not user
+    const budgets = await budget.find({ userId: user._id });
+    res.status(200).send(budgets);
+  } catch (error) {
+    console.error('Error fetching budgets:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+// Route pour récupérer les détails d'un budget spécifique
+router.get('/budget/:id', async (req, res) => {
+  console.log("OKKKKKKKKKKKKKKKKKKKKK")
+  try {
+    const budgetId = req.params.id;
+    const budget = await Budget.findById(budgetId);
+    if (!budget) {
+      return res.status(404).json({ message: 'Budget not found' });
+    }
+    res.status(200).json(budget);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du budget:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+app.post('/budget', authenticateToken, async (req, res) => {
+  try {
+    console.log("I SHOULD CALL, OR I AM OVERIDING")
+    const Budget = await budget.create(req.body)
+    res.status(200).json(Budget)
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message })
+  }
+});
+
+app.get('/budget', authenticateToken, async (req, res) =>  {
+  try {
+    const {user} =  req;
+    console.log("HEREEEEEEEE", user)
+    const allBudget = await budget.find({userId: user.userId});
+    res.status(200).json(allBudget);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get('/budget/:id', authenticateToken, async (req, res) => {
+  try {
+    const budgetId = req.params.id;
+    const budgetDetails = await budget.findById(budgetId);
+    if (!budgetDetails) {
+      return res.status(404).json({ message: 'Budget not found' });
+    }
+    res.status(200).json(budgetDetails);
+  } catch (error) {
+    console.error('Error fetching budget details:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
