@@ -2,48 +2,49 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddTransaction from '../components/AddTransactions';
 import RecentExpenses from '../components/RecentExpenses';
-import ExpenseItem from '../components/ExpenseItem'; // Importez le composant ExpenseItem
+
 
 const TransactionsPage = () => {
   
   const [transactions, setTransactions] = useState([]);
 
-  // Yah I am here
   useEffect(() => {
     // Code pour charger les transactions récentes depuis le serveur...
-  }, []);
+    axios.get("http://localhost:3000/transaction",  {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(data => {
+   
+    setTransactions(data.data)
+  })
+
+  }, []); 
 
   const handleDeleteExpense = async (expenseId) => {
     try {
-      await axios.delete(`http://localhost:3000/transactions/${expenseId}`, {
+      await axios.delete(`http://localhost:3000/transaction/${expenseId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      // Mettre à jour la liste des transactions après la suppression
       setTransactions(transactions.filter(expense => expense._id !== expenseId));
     } catch (error) {
       console.error('Erreur lors de la suppression de la dépense:', error.response.data);
     }
   };
-
-  return (
+  
+  return(
     <div>
       <h2>Page des Transactions</h2>
-      <AddTransaction />
-     
-      {/* Ajout du composant RecentExpenses en lui passant la fonction de suppression */}
-      <RecentExpenses onDeleteExpense={handleDeleteExpense} />
+      <AddTransaction setTransactions={setTransactions} transactions={transactions}/>
+      <RecentExpenses onDeleteExpense={handleDeleteExpense} transactions={transactions} setTransactions={setTransactions} /> 
 
-      {/* Boucle de rendu des transactions avec les détails du budget */}
-      {transactions.map(transaction => (
-        <ExpenseItem 
-         // Passer les détails du budget à ExpenseItem
-          handleDelete={handleDeleteExpense} 
-        />
-      ))}
+      
+
     </div>
-  );
-};
+  )
+}; 
 
 export default TransactionsPage;
+

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const TransactionsPage = () => {
+const TransactionsPage = ({setTransactions, transactions}) => {
+
+   // now test now 
   const navigate = useNavigate();
-  const [transactions, setTransactions] = useState([]);
+  // const [transactions, setTransactions] = useState([]);
   const [nouvelTransaction, setNouvelTransaction] = useState({
     name: '',
     amount: '',
@@ -49,7 +51,7 @@ const TransactionsPage = () => {
         userId: localStorage.getItem('userId') // Inclure l'ID de l'utilisateur
       };
   
-      const transactionResponse = await axios.post('http://localhost:3000/transactions', transactionData, {
+      const transactionResponse = await axios.post('http://localhost:3000/transaction', transactionData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
