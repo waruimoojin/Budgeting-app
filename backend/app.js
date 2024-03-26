@@ -6,15 +6,8 @@ const category = require('./models/categoryModel');
 const app = express();
 const port = 3000;
 const bcrypt = require('bcrypt');
-
-
-
 const { authRoutes, budgetRoutes, transactionRoutes, categoryRoutes  } = require("./routes")
-
-
-
-
-
+const { errorConverter, errorHandler } = require("./middlewares/errorHandler");
 // DB CONNECTION
 async function connectDB() {
   try {
@@ -81,9 +74,6 @@ app.post('/users', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-
-
 // GET
 app.get('/users', async (req, res) => {
   try {
@@ -95,7 +85,18 @@ app.get('/users', async (req, res) => {
   }
 });
 
+// send back a 404 error for any unknown api request
+app.use((req, res, next) => {
+  next(new ApiError(httpStatus.BAD_REQUEST, "API Not found"));
+});
+
+// convert error to ApiError, if needed
+app.use(errorConverter);
+
+// handle error
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Example app listening on port 3000`);
 });
+
