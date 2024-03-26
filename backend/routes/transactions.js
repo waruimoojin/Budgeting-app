@@ -6,8 +6,11 @@ const router = express.Router()
 
 router.route("/").post(authenticateToken, async(req,res) => {
     const { body, user} = req;
-    console.log(body);
-    const transaction = await transactionController.create(body, user)
+    console.log(body); // now create an expense okay // now in db check can u see budgetId in transaction model i'll check rn yeah i see the budgetid in db
+    // ok now on frontend it's work i guess i'll create a new expense and check
+    //
+    const transaction = await transactionController.create(body, user) // there are two params
+    console.log(transaction)
     res.status(200).send(transaction)
 }).get(authenticateToken, async (req, res) => {
     const { user } = req;

@@ -21,10 +21,12 @@ const RecentExpenses = ({ transactions, setTransactions }) => {
   console.log("Données réelles des transactions:", transactions);
 
   // Trie les transactions par date (la plus récente d'abord)
-  const sortedTransactions = transactions.slice().sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
+  // no need of slice it, if you want some chunk then use slice
+  const sortedTransactions = transactions.sort((a, b) => {
+    return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
+  // put these function in utils, this way you can re use this func many places
   // Fonction pour formater la date au format "jj/mm/aaaa"
   const formatDate = (dateString) => {
     if (!dateString) {
@@ -42,10 +44,10 @@ const RecentExpenses = ({ transactions, setTransactions }) => {
       <h2>Expenses</h2>
       {
         sortedTransactions.length ? sortedTransactions.map(expense => {
-          console.log("Date de la transaction:", expense.date); // Ajout du console.log
+          console.log("Date de la transaction:", expense.createdAt); // Ajout du csorry mispelled
           return (
             <div key={expense._id}>
-              <p>Date: {formatDate(expense.date)}</p>
+              <p>Date: {formatDate(expense.createdAt)}</p>
               <ExpenseItem transaction={expense} handleDelete={() => handleDeleteExpense(expense._id)} />
             </div>
           );
