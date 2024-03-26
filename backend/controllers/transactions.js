@@ -1,15 +1,16 @@
 const Transaction = require ('../models/transactionsModel')
-const create = async ({ name, amount }, user, budget) => {
+const create = async ({ name, amount, budgetId }, user) => {
     try {
         const transaction = await Transaction.create({
             name,
             amount,
-            date: new Date(), // Utilisation de la date actuelle lors de la création de la transaction
+            // date: new Date(), // Utilisation de la date actuelle lors de la création de la transaction
+            //  you dont need th ok 
             userId: user.userId,
-            budgetId: budget,
+            budgetId: budgetId,
         });
-        return transaction;
-    } catch (err) {
+        return await Transaction.findById(transaction._id).populate("budgetId")
+     } catch (err) {
         console.log("Error: ", err);
         return { message: "Could not create an expense!" };
     }
@@ -18,7 +19,7 @@ const create = async ({ name, amount }, user, budget) => {
 
 
 const findOne = async (filter) =>{
-    return await Transaction.findOne(filter)
+    return await Transaction.findOne(filter).populate("budgetId")
 }
 
 const find = async (filter) =>{
