@@ -18,18 +18,25 @@ function Login() {
         },
         body: JSON.stringify({ email, password }),
       });
-
+      
       const data = await response.json();
-      if (response.ok) {
+      if(!response.ok){
+        alert(response.message)
+        return;
+        
+      }
+      
+      if (response.ok) { 
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.userId);
-        navigate('/budget');
+        
       } else {
         alert('Login failed:', data.message);
       }
     } catch (error) {
       console.error('Login failed:', error);
     }
+    navigate('/budget');
   };
 
   return (
