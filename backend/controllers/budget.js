@@ -25,7 +25,7 @@ const create = async ({ name, amount }, user) => {
         })
         return budget
     } catch (err) {
-        console.log("Error: ", error)
+        console.log("Error: ", err)
         return { message: "Couldnt create budget!" }
     }
 
