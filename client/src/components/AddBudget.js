@@ -34,18 +34,6 @@ const AddBudget = () => {
     fetchBudgets();
   }, [fetchBudgets]);
 
-  // this is actually not needed, you can send userId in backend rather putting
-  // useEffect which cause extra re render
-  // now come to you backend
-  // useEffect(() => {
-  //   const userId = localStorage.getItem('userId');
-  //   if (userId) {
-  //     setNouvelBudget(prevState => ({
-  //       ...prevState,
-  //       userId: userId
-  //     }));
-  //   }
-  // }, []);
 
   const ajouterBudget = () => {
     const token = localStorage.getItem('token');

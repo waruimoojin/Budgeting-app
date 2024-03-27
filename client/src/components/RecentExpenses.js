@@ -2,8 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import ExpenseItem from './ExpenseItem';
 
-const RecentExpenses = ({ transactions, setTransactions }) => {
+const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => {
   const handleDeleteExpense = async (expenseId) => {
+    
     console.log("Expense to delete =>", expenseId);
     try {
       await axios.delete(`http://localhost:3000/transaction/${expenseId}`, {
@@ -17,16 +18,18 @@ const RecentExpenses = ({ transactions, setTransactions }) => {
     }
   };
 
-  // Console log des données réelles
   console.log("Données réelles des transactions:", transactions);
+  
 
-  // Trie les transactions par date (la plus récente d'abord)
-  // no need of slice it, if you want some chunk then use slice
-  const sortedTransactions = transactions.sort((a, b) => {
+  // Filtrer les transactions pour n'afficher que celles du budget sélectionné
+  const filteredTransactions = transactions.filter(expense => expense.budgetId === selectedBudgetId);
+  
+
+  // Trie les transactions filtrées par date (la plus récente d'abord)
+  const sortedTransactions = filteredTransactions.sort((a, b) => {
     return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
-  // put these function in utils, this way you can re use this func many places
   // Fonction pour formater la date au format "jj/mm/aaaa"
   const formatDate = (dateString) => {
     if (!dateString) {
@@ -44,14 +47,14 @@ const RecentExpenses = ({ transactions, setTransactions }) => {
       <h2>Expenses</h2>
       {
         sortedTransactions.length ? sortedTransactions.map(expense => {
-          console.log("Date de la transaction:", expense.createdAt); // Ajout du csorry mispelled
+          console.log("Date de la transaction:", expense.createdAt);
           return (
             <div key={expense._id}>
               <p>Date: {formatDate(expense.createdAt)}</p>
               <ExpenseItem transaction={expense} handleDelete={() => handleDeleteExpense(expense._id)} />
             </div>
           );
-        }) : <></>
+        }) : <p>Aucune dépense trouvée pour ce budget.</p>
       }
     </div>
   );

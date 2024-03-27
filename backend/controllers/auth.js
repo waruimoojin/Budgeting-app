@@ -4,8 +4,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const ApiError =  require("../utils/ApiError")
 const httpStatus = require("http-status")
+const Budget = require('../models/budgetModel.js'); // Assurez-vous de spécifier le bon chemin d'accès au modèle Budget
+
 // it is standard to captilize Model Name
 const login = async ({email, password}) => {
+  
         const user = await User.findOne({ email });
         if (!user) {
           throw new ApiError(httpStatus.BAD_REQUEST, "Invlid email and password")
@@ -17,10 +20,21 @@ const login = async ({email, password}) => {
           throw new ApiError(httpStatus.BAD_REQUEST, "Invlid email and password")
         }
         const token = jwt.sign({ userId: user._id, email: user.email }, 'your_secret_key');
-        return {userId: user._id, token}      
+
+        const existingBudgets = await Budget.find({ userId: user._id });
+        
+        if (existingBudgets.length > 0) {
+          return { userId: user._id, token, hasBudgets: true };
+            } else {
+          return { userId: user._id, token, hasBudgets: false };
+          
+        }
+        
+             
 }
 
 const register = async({email, password}) => {
+  
         // Vérifier si l'utilisateur existe déjà dans la base de données
         const existingUser = await User.findOne({ email });
         if (existingUser) {
