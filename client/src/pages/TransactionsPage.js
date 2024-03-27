@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AddTransaction from '../components/AddTransactions';
+import { useParams } from 'react-router-dom';
 import RecentExpenses from '../components/RecentExpenses';
 
-
 const TransactionsPage = () => {
-  
+  const { budgetId } = useParams();
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    // Code pour charger les transactions récentes depuis le serveur...
-    axios.get("http://localhost:3000/transaction",  {
+    // Code pour charger les transactions récentes depuis le serveur pour le budget sélectionné...
+    axios.get(`http://localhost:3000/transaction?budgetId=${budgetId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then(data => {
-   
-    setTransactions(data.data)
-  })
-
-  }, []); 
+      setTransactions(data.data)
+    })
+  }, [budgetId]); 
 
   const handleDeleteExpense = async (expenseId) => {
     try {
@@ -34,19 +31,14 @@ const TransactionsPage = () => {
     }
   };
   
-  return(
+  return (
     <div>
       <h2>Page des Transactions</h2>
-      <AddTransaction setTransactions={setTransactions} transactions={transactions}/>
+     
+
       <RecentExpenses onDeleteExpense={handleDeleteExpense} transactions={transactions} setTransactions={setTransactions} /> 
-
-      
-
     </div>
   )
 }; 
 
-// hahaha you remove it
-
 export default TransactionsPage;
-

@@ -20,23 +20,28 @@ function Login() {
       });
       
       const data = await response.json();
+      console.log("theeee dataa >" , data)
       if(!response.ok){
         alert(response.message)
         return;
         
       }
       
-      if (response.ok) { 
+      
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.userId);
         
+        
+   // Après une connexion réussie
+      if (data.hasBudgets) {
+        navigate('/existingbudgets'); // Redirect to ExistingBudgets page
       } else {
-        alert('Login failed:', data.message);
+        navigate('/budget'); // Redirect to Budget page for creating a new budget
       }
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Error during login:', error.response.data.message);
+      // Handle login error (e.g., display error message)
     }
-    navigate('/budget');
   };
 
   return (
