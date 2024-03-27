@@ -20,7 +20,7 @@ function Login() {
       });
       
       const data = await response.json();
-      console.log("theeee dataa >" , data)
+      
       if(!response.ok){
         alert(response.message)
         return;
