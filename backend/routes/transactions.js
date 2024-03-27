@@ -2,7 +2,7 @@ const express = require("express")
 const { transactionController } = require ("../controllers")
 const { authenticateToken } = require ("../../middleware/auth");
 const router = express.Router()
-
+const mongoose = require("mongoose")
 
 router.route("/").post(authenticateToken, async(req,res) => {
     const { body, user} = req;
@@ -12,7 +12,16 @@ router.route("/").post(authenticateToken, async(req,res) => {
     res.status(200).send(transaction)
 }).get(authenticateToken, async (req, res) => {
     const { user } = req;
-    const transactions = await transactionController.find({ userId: user.userId })
+    console.log(req.query)
+    const {budgetId} = req.query
+    const filter = {
+        userId: user.userId
+    }
+    if (budgetId){
+        filter.budgetId = new mongoose.Types.ObjectId(budgetId)
+    }
+    const transactions = await transactionController.find(filter)
+    console.log(transactions)
     res.status(200).send(transactions)
 })
 

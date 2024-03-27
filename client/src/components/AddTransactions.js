@@ -13,11 +13,8 @@ const TransactionsPage = ({setTransactions, transactions}) => {
     expenseid: ''
   });
   const [budgets, setBudgets] = useState([]);
-  const [userBudgets, setUserBudgets] = useState([]);
-  const [nouvelBudget, setNouvelBudget] = useState({  
-    name: '',
-    amount: ''
-  });
+  
+
 
   useEffect(() => {
     fetchBudgets();
@@ -34,7 +31,7 @@ const TransactionsPage = ({setTransactions, transactions}) => {
       .then(response => {
         const userBudgets = response.data.filter(budget => budget.userId === localStorage.getItem('userId'));
         setBudgets(userBudgets);
-        setUserBudgets(response.data);
+        
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des budgets:', error);
@@ -54,12 +51,13 @@ const TransactionsPage = ({setTransactions, transactions}) => {
       const transactionResponse = await axios.post('http://localhost:3000/transaction', transactionData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
+          
         }
+        
       });
-  
+      
       console.log('Transaction ajoutée avec succès:', transactionResponse.data);
       setTransactions([...transactions, transactionResponse.data]);
-      setNouvelTransaction({ name: '', amount: '', budgetId: '' });
       navigate('/transactions');
     } catch (transactionError) {
       console.error('Erreur lors de l\'ajout de la transaction:', transactionError.response.data);
@@ -70,26 +68,7 @@ const TransactionsPage = ({setTransactions, transactions}) => {
   
   
 
-  const ajouterNouveauBudget = async () => {
-    try {
-      const userId = localStorage.getItem('userId');
-      const budgetData = {
-        ...nouvelBudget,
-        userId: userId
-      };
-
-      const budgetResponse = await axios.post('http://localhost:3000/budget', budgetData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      console.log('Nouveau budget ajouté avec succès:', budgetResponse.data);
-      fetchBudgets();
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du nouveau budget:', error.response.data);
-    }
-  };
+  
 
   const handleInputChange = (e) => {
     setNouvelTransaction({
@@ -98,12 +77,7 @@ const TransactionsPage = ({setTransactions, transactions}) => {
     });
   };
 
-  const handleNewBudgetChange = (e) => {
-    setNouvelBudget({
-      ...nouvelBudget,
-      [e.target.name]: e.target.value,
-    });
-  };
+
 
   return (
     <div>
@@ -127,26 +101,10 @@ const TransactionsPage = ({setTransactions, transactions}) => {
       </div>
       <button onClick={ajouterEntite}>Add Expense</button>
 
-      <h2>Add new budget</h2>
-      <div>
-        <label>Budget name:
-          <input type="text" name="name" onChange={handleNewBudgetChange} />
-        </label>
-        <label>Amount:
-          <input type="text" name="amount" onChange={handleNewBudgetChange} />
-        </label>
-      </div>
-      <button onClick={ajouterNouveauBudget}>Add Budget</button>
+    
 
-      <h2>Existing Budgets</h2>
-      <ul>
-        {userBudgets.map(budget => (
-          <div key={budget._id} style={{ border: '1px solid black', padding: '10px', margin: '10px 0' }}>
-            <p>Name: {budget.name}</p>
-            <p>Amount: {budget.amount}</p>
-          </div>
-        ))}
-      </ul>
+     
+      
     </div>
   );
 };

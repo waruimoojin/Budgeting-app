@@ -3,6 +3,7 @@ import axios from 'axios';
 import ExpenseItem from './ExpenseItem';
 
 const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => {
+  console.log("Transactions ", transactions)
   const handleDeleteExpense = async (expenseId) => {
     
     console.log("Expense to delete =>", expenseId);
@@ -20,15 +21,7 @@ const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => 
 
   console.log("Données réelles des transactions:", transactions);
   
-
-  // Filtrer les transactions pour n'afficher que celles du budget sélectionné
-  const filteredTransactions = transactions.filter(expense => expense.budgetId === selectedBudgetId);
   
-
-  // Trie les transactions filtrées par date (la plus récente d'abord)
-  const sortedTransactions = filteredTransactions.sort((a, b) => {
-    return new Date(b.createdAt) - new Date(a.createdAt);
-  });
 
   // Fonction pour formater la date au format "jj/mm/aaaa"
   const formatDate = (dateString) => {
@@ -46,7 +39,7 @@ const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => 
     <div>
       <h2>Expenses</h2>
       {
-        sortedTransactions.length ? sortedTransactions.map(expense => {
+        transactions.length ? transactions.sort((a, b) => b.createdAt - a.createdAt).map(expense => {
           console.log("Date de la transaction:", expense.createdAt);
           return (
             <div key={expense._id}>
