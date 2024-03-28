@@ -2,12 +2,12 @@ const Budget = require("../models/budgetModel")
 
 
 const create = async ({ name, amount }, user) => {
-    console.log(amount, name, user)
    
     try {
         const budget = await Budget.create({
             name,
             amount,
+            origionalAmount: amount,
             userId: user.userId
         })
         return budget

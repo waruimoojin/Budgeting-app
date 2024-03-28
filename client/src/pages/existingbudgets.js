@@ -82,6 +82,8 @@ function ExistingBudget() {
     }
   };
 
+  console.log(budgets)
+
   return (
     <div className="container py-4">
       <div className="row mb-4">
@@ -133,13 +135,14 @@ function ExistingBudget() {
             <div className="card h-100">
               <div className="card-body">
                 <h5 className="card-title">{budget.name}</h5>
-                <p className="card-text">Amount: {budget.amount}</p>
+                <p className="card-text">Total Budget: {budget.origionalAmount}</p>
+                <p className='card-text'>Amount Left: {budget.amount}</p>
                 <div className="progress mb-3">
                   <div
                     className="progress-bar bg-success"
                     role="progressbar"
-                    style={{ width: `${(budget.amount / 1000) * 100}%` }}
-                    aria-valuenow={(budget.amount / 1000) * 100}
+                    style={{ width: `${(budget.amount / budget.origionalAmount) * 100}%` }} // it will be more complex...... let me think now check
+                    aria-valuenow={(budget.amount / budget.origionalAmount) * 100}
                     aria-valuemin="0"
                     aria-valuemax="100"
                   ></div>
