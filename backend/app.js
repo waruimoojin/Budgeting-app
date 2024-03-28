@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const jwt = require('jsonwebtoken'); // Import JWT library
 const users = require('./models/usersModel');
-const category = require('./models/categoryModel');
+const cors = require("cors");
 const app = express();
 const port = 3000;
 const bcrypt = require('bcrypt');
@@ -23,10 +23,9 @@ connectDB();
 
 
 app.use(express.json({}))
+app.use(cors());
 
-// use cors package, u dont need all these line of code
-// npm i cors
-// app.use(cors())
+
 app.use((_req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
