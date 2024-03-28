@@ -42,17 +42,19 @@ const TransactionsPage = ({ setTransactions, transactions }) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      const budgetToUpdate = budgets.find(budget => budget._id === nouvelTransaction.budgetId);
-      const newBudgetAmount = budgetToUpdate.amount - nouvelTransaction.amount;
-      await axios.patch(`http://localhost:3000/budget/${nouvelTransaction.budgetId}`, { amount: newBudgetAmount }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+     // u dont need that part
+    
+      console.log('Transaction ajoutée avec succès:', transactionResponse.data); // create a new expense and check this console ->
+      // need to check when u create a expense the origonal amount is changed or not from backend, not db what backend is sending
+      setTransactions([...transactions.map(e => {
+        return {
+          ...e,
+          budgetId: {
+            ...e.budgetId,
+            amount: transactionResponse.data.budgetId.amount
+          }
         }
-        
-      });
-      console.log("New>>", newBudgetAmount)
-      console.log('Transaction ajoutée avec succès:', transactionResponse.data);
-      setTransactions([...transactions, transactionResponse.data]);
+      }), transactionResponse.data]);
       navigate('/transactions');
     } catch (transactionError) {
       console.error('Erreur lors de l\'ajout de la transaction:', transactionError.response.data);

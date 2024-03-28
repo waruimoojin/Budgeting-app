@@ -19,6 +19,7 @@ const ExpenseItem = ({ transaction, handleDelete }) => {
               <div className="box p-1">
                 <h5>Budget Details</h5>
                 <p><strong>Budget Name:</strong> {transaction.budgetId.name}</p>
+                <p><strong>Total Amount:</strong> {transaction.budgetId.origionalAmount}</p>
                 <p><strong>Budget Amount:</strong> {transaction.budgetId.amount}</p>
               </div>
             </div>

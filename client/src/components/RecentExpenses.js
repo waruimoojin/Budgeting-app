@@ -7,16 +7,26 @@ const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => 
   const handleDeleteExpense = async (expenseId) => {
     
     console.log("Expense to delete =>", expenseId);
-    try {
+    // try {
       await axios.delete(`http://localhost:3000/transaction/${expenseId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      setTransactions(transactions.filter(e => e._id !== expenseId));
-    } catch (error) {
-      console.error('Erreur lors de la suppression de la dépense:', error);
-    }
+      console.log("Delete => ", transactions)
+      const oldTransaction = [...transactions.filter(e => e._id !== expenseId)].map(e => {
+        return {
+          ...e,
+          budgetId: {
+            ...e.budgetId,
+            amount: e.budgetId.amount + transactions.find(t => t._id === expenseId).amount // this should be _id, you need to confirm from console.log
+          } // let me think...............
+        }
+      })
+      setTransactions(oldTransaction);
+    // } catch (error) {
+    //   console.error('Erreur lors de la suppression de la dépense:', error);
+    // }
   };
 
   console.log("Données réelles des transactions:", transactions);
