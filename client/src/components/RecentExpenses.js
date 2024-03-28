@@ -36,21 +36,22 @@ const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => 
   };
 
   return (
-    <div>
-      <h2>Expenses</h2>
-      {
-        transactions.length ? transactions.sort((a, b) => b.createdAt - a.createdAt).map(expense => {
+    <div className="container">
+      <h2 className="text-center">Expenses</h2>
+      <div className="d-flex justify-content-center flex-wrap">
+        {transactions.length ? transactions.sort((a, b) => b.createdAt - a.createdAt).map(expense => {
           console.log("Date de la transaction:", expense.createdAt);
           return (
-            <div key={expense._id}>
-              <p>Date: {formatDate(expense.createdAt)}</p>
+            <div key={expense._id} className="m-2">
+               <p>Date: {formatDate(expense.createdAt)}</p>
               <ExpenseItem transaction={expense} handleDelete={() => handleDeleteExpense(expense._id)} />
             </div>
           );
-        }) : <p>Aucune dépense trouvée pour ce budget.</p>
-      }
+        }) : <p>Aucune dépense trouvée pour ce budget.</p>}
+      </div>
     </div>
   );
 };
+
 
 export default RecentExpenses;

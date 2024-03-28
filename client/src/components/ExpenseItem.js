@@ -1,19 +1,35 @@
-// ExpenseItem.js
 import React from 'react';
+import trashIcon from './trash-icon.png'; // Importez l'icône de corbeille
 
 const ExpenseItem = ({ transaction, handleDelete }) => {
   
   return (
-    <div key={transaction._id} style={{ border: '1px solid black', padding: '10px', margin: '10px 0' }}>
-      <p>Name: {transaction.name}</p>
-      <p>Amount: {transaction.amount}</p>
-      {transaction.budgetId  && (
-        <div >
-          <p>Budget Name: {transaction.budgetId ? transaction.budgetId.name: ""}</p>
-          <p>Budget Amount: {transaction.budgetId ? transaction.budgetId.amount: ""}</p>
+    <div className="card mb-2" style={{ maxWidth: '900px' }}>
+      <div className="card-body">
+        <div className="row">
+          <div className="col">
+            <h5>Transaction</h5>
+            <ul>
+            <p><li><strong>Name:</strong> {transaction.name}</li></p>
+            <p> <li><strong>Amount:</strong> {transaction.amount}</li></p>
+            </ul>
+          </div>
+          {transaction.budgetId && (
+            <div className="col">
+              <div className="box p-1">
+                <h5>Budget Details</h5>
+                <p><strong>Budget Name:</strong> {transaction.budgetId.name}</p>
+                <p><strong>Budget Amount:</strong> {transaction.budgetId.amount}</p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-      <button onClick={handleDelete}>Delete</button>
+        <div className="text-center mt-2">
+          <button className="btn btn-danger" onClick={handleDelete}>
+            <img src={trashIcon} alt="Delete" style={{ width: '25px' }} />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

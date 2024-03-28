@@ -15,8 +15,8 @@ router.route("/").post(authenticateToken, async (req, res) => {
 
 
 router.route("/:id").patch(authenticateToken, async (req, res) => {
-    const { body } = req;
-    const budget = await budgetController.updateOne(id, body)
+    const { body, id } = req;
+    const budget = await budgetController.updateOne( id ,body)
     res.status(200).send(budget)
 }).get(authenticateToken, async (req, res) => {
     const { id } = req.params;
