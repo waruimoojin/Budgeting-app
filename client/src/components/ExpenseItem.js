@@ -4,7 +4,7 @@ import trashIcon from './trash-icon.png'; // Importez l'icône de corbeille
 const ExpenseItem = ({ transaction, handleDelete }) => {
   
   return (
-    <div className="card mb-2" style={{ maxWidth: '900px' }}>
+    <div className="card mb-2 card bg-light" style={{ maxWidth: '900px' }}>
       <div className="card-body">
         <div className="row">
           <div className="col">

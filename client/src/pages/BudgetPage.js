@@ -7,10 +7,7 @@ const BudgetPage = () => {
   const navigate = useNavigate();
   
   const ajouterEntite = () => {
-    // Logique pour ajouter un utilisateur
-    // ...
-
-    // Redirection vers la page du budget après l'ajout de l'utilisateur
+  
     navigate('/transactions');
   };
 
