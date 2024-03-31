@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ExistingBudget() {
   const [budgets, setBudgets] = useState([]);
   const [newBudgetName, setNewBudgetName] = useState('');
   const [newBudgetAmount, setNewBudgetAmount] = useState('');
-  const [showAddBudgetForm, setShowAddBudgetForm] = useState(false); // State to track whether to show add budget form
+  const [showAddBudgetForm, setShowAddBudgetForm] = useState(false);
   const navigate = useNavigate();
 
   const fetchBudgets = useCallback(async () => {
@@ -45,7 +45,6 @@ function ExistingBudget() {
         },
       });
       if (response.status === 200) {
-        // Filter out the deleted budget from the list of budgets
         setBudgets(budgets.filter(budget => budget._id !== budgetId));
       } else {
         console.error('Failed to delete budget:', response.statusText);
@@ -53,16 +52,15 @@ function ExistingBudget() {
     } catch (error) {
       console.error('Failed to delete budget:', error);
     }
-  
-  
   };
 
-  const handleAddBudget = async () => {
+  const handleAddBudget = async (e) => {
+    e.preventDefault();
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
         'http://localhost:3000/budget',
-        { name: newBudgetName, amount: newBudgetAmount },
+        { name: newBudgetName, origionalAmount: newBudgetAmount, amount: newBudgetAmount },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -72,8 +70,8 @@ function ExistingBudget() {
       if (response.status === 201) {
         setNewBudgetName('');
         setNewBudgetAmount('');
-        setShowAddBudgetForm(false); // Hide the add budget form after successfully adding a budget
-        fetchBudgets(); // Fetch budgets again to display the newly added budget
+        setShowAddBudgetForm(false);
+        fetchBudgets();
       } else {
         console.error('Failed to add budget:', response.statusText);
       }
@@ -81,8 +79,6 @@ function ExistingBudget() {
       console.error('Failed to add budget:', error);
     }
   };
-
-  console.log(budgets)
 
   return (
     <div className="container py-4">
@@ -101,68 +97,65 @@ function ExistingBudget() {
       {showAddBudgetForm && (
         <div className="row mb-4">
           <div className="col">
-            <h2>Add New Budget</h2>
-            <form onSubmit={handleAddBudget}>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  placeholder="e.g. Groceries"
-                  className="form-control"
-                  value={newBudgetName}
-                  onChange={(e) => setNewBudgetName(e.target.value)}
-                />
+            <div className="card">
+              <h5 className="card-header">Add New Budget</h5>
+              <div className="card-body">
+                <form onSubmit={handleAddBudget}>
+                  <div className="mb-3">
+                    <label htmlFor="budgetName" className="form-label">Budget Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="budgetName"
+                      value={newBudgetName}
+                      onChange={(e) => setNewBudgetName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="budgetAmount" className="form-label">Budget Amount</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="budgetAmount"
+                      value={newBudgetAmount}
+                      onChange={(e) => setNewBudgetAmount(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary">Add Budget</button>
+                </form>
               </div>
-              <div className="mb-3">
-                <input
-                  type="number"
-                  placeholder="e.g. 500 DH"
-                  className="form-control"
-                  value={newBudgetAmount}
-                  onChange={(e) => setNewBudgetAmount(e.target.value)}
-                />
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Add Budget
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       )}
       <h2>Existing Budgets</h2>
       <div className="row">
-        {budgets.map((budget) => (
-          <div key={budget._id} className="col-md-4 mb-4">
-            <div className="card h-100">
-              <div className="card-body">
-                <h5 className="card-title">{budget.name}</h5>
-                <p className="card-text">Total Budget: {budget.origionalAmount}</p>
-                <p className='card-text'>Amount Left: {budget.amount}</p>
-                <div className="progress mb-3">
-                  <div
-                    className="progress-bar bg-success"
-                    role="progressbar"
-                    style={{ width: `${(budget.amount / budget.origionalAmount) * 100}%` }} // it will be more complex...... let me think now check
-                    aria-valuenow={(budget.amount / budget.origionalAmount) * 100}
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-                <button
-                  className="btn btn-primary me-2"
-                  onClick={() => handleBudgetClick(budget._id)}
-                >
-                  View Transactions
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDeleteBudget(budget._id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+      {budgets.map((budget) => (
+  <div key={budget._id} className="col-md-4 mb-4">
+    <div className="card border-custom shadow ">
+      <div className="card-body">
+        <h5 className="card-title">{budget.name}</h5>
+        <p className="card-text">Total Budget: {budget.origionalAmount}</p>
+        <p className="card-text">Amount Left: {budget.amount}</p>
+        <div className="progress mb-3">
+          <div
+            className="progress-bar bg-success"
+            role="progressbar"
+            style={{ width: `${(budget.amount / budget.origionalAmount) * 100}%` }}
+            aria-valuenow={(budget.amount / budget.origionalAmount) * 100}
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+        <button className="btn btn-primary me-2" onClick={() => handleBudgetClick(budget._id)}>View Transactions</button>
+        <button className="btn btn-danger" onClick={() => handleDeleteBudget(budget._id)}>Delete</button>
+      </div>
+    </div>
+  </div>
+))}
+
       </div>
     </div>
   );

@@ -42,19 +42,8 @@ const TransactionsPage = ({ setTransactions, transactions }) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-     // u dont need that part
-    
-      console.log('Transaction ajoutée avec succès:', transactionResponse.data); // create a new expense and check this console ->
-      // need to check when u create a expense the origonal amount is changed or not from backend, not db what backend is sending
-      setTransactions([...transactions.map(e => {
-        return {
-          ...e,
-          budgetId: {
-            ...e.budgetId,
-            amount: transactionResponse.data.budgetId.amount
-          }
-        }
-      }), transactionResponse.data]);
+
+      setTransactions([...transactions, transactionResponse.data]);
       navigate('/transactions');
     } catch (transactionError) {
       console.error('Erreur lors de l\'ajout de la transaction:', transactionError.response.data);
@@ -71,31 +60,37 @@ const TransactionsPage = ({ setTransactions, transactions }) => {
 
   return (
     <div className="container mt-4">
-      <h4 className="mb-3">Add new expense</h4>
-      <div className="row">
+      <div className="row justify-content-center">
         <div className="col-md-6">
-          <label>Expense name:</label>
-          <input type="text" name="name" className="form-control" onChange={handleInputChange} value={nouvelTransaction.name} />
-        </div>
-        <div className="col-md-6">
-          <label>Amount:</label>
-          <input type="text" name="amount" className="form-control" onChange={handleInputChange} value={nouvelTransaction.amount} />
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col-md-6">
-          <label>Category:</label>
-          <select name="budgetId" className="form-control" onChange={handleInputChange} value={nouvelTransaction.budgetId}>
-            <option value="">Select Budget</option>
-            {budgets.map(budget => (
-              <option key={budget._id} value={budget._id}>{budget.name} - {budget.amount}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col-md-6">
-          <button className="btn btn-primary" onClick={ajouterEntite}>Add Expense</button>
+          <div className="card">
+            <div className="card-header">
+              <h4>Add New Expense</h4>
+            </div>
+            <div className="card-body">
+              <form>
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">Expense Name:</label>
+                  <input type="text" id="name" name="name" className="form-control" onChange={handleInputChange} value={nouvelTransaction.name} />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="amount" className="form-label">Amount:</label>
+                  <input type="text" id="amount" name="amount" className="form-control" onChange={handleInputChange} value={nouvelTransaction.amount} />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="budget" className="form-label">Category:</label>
+                  <select id="budget" name="budgetId" className="form-select" onChange={handleInputChange} value={nouvelTransaction.budgetId}>
+                    <option value="">Select Budget</option>
+                    {budgets.map(budget => (
+                      <option key={budget._id} value={budget._id}>{budget.name} - {budget.amount}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="text-center">
+                  <button type="button" className="btn btn-primary" onClick={ajouterEntite}>Add Expense</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>

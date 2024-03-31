@@ -11,13 +11,11 @@ const create = async ({ name, amount, budgetId }, user) => {
         const transaction = await Transaction.create({
             name,
             amount,
-            // date: new Date(), // Utilisation de la date actuelle lors de la création de la transaction
-            //  you dont need th ok 
             userId: user.userId,
             budgetId: budgetId,
         });
         budget.amount -= amount;
-        console.log("New amount =>", budget.amount) // compare the above and this
+        console.log("New amount =>", budget.amount) 
         await budget.save()
         return await Transaction.findById(transaction._id).populate("budgetId")
 }
