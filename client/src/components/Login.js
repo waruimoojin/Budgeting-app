@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate ,Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importez la feuille de style Bootstrap
 import loginImage from './pngegg.png';
+import {AuthContext} from "../App"
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // user shouln't be able to come here iuf they are logged in
+    if(localStorage.getItem("token")){
+      navigate('/existingbudgets'); // not saving yet run you test first
+      // login and try to comeback to login again
+    }
+  })
+
+  const {setIsLoggedIn} = useContext(AuthContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -24,20 +34,20 @@ function Login() {
       if(!response.ok){
         alert(response.message)
         return;
-        
       }
       
-      
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.userId);
+      setIsLoggedIn(true)
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.userId);
         
-        
+      console.log("I should be running")
    // Après une connexion réussie
       if (data.hasBudgets) {
         navigate('/existingbudgets'); // Redirect to ExistingBudgets page
       } else {
         navigate('/budget'); // Redirect to Budget page for creating a new budget
       }
+      console.log("Here")
     } catch (error) {
       console.error('Error during login:', error.response.data.message);
       // Handle login error (e.g., display error message)
