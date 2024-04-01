@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
+import {  Route, Routes, Link, useNavigate } from 'react-router-dom';
 import BudgetPage from './pages/BudgetPage';
 import TransactionsPage from './pages/TransactionsPage';
 import Login from './components/Login';
