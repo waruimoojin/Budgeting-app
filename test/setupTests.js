@@ -1,5 +1,6 @@
-// test/setupTests.js
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+// src/setupTests.js
 
-Enzyme.configure({ adapter: new Adapter() });
+import { configure } from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-18'; // Adaptateur React 18
+
+configure({ adapter: new Adapter() });
