@@ -16,6 +16,7 @@ function ExistingBudget() {
       const response = await axios.get('http://localhost:3000/budget', {
         headers: {
           Authorization: `Bearer ${token}`,
+        
         },
       });
       if (response.status === 200) {
