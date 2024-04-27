@@ -1,44 +1,49 @@
-const { shallow } = require('enzyme');
-const Login = require('../client/src/components/Login');
-const React = require('react');
-const { configure } = require('enzyme');
-const Adapter = require('enzyme-adapter-react-16');
-require("./setupTests");
+import React from 'react';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import Login from '../client/src/components/Login';
+
 
 configure({ adapter: new Adapter() });
+
 describe('Login Component Tests', () => {
   it('should render login form', () => {
+
     const wrapper = shallow(<Login />);
-    console.log("[DEBUG] Rendu du formulaire de connexion :", wrapper.debug());
-    expect(wrapper.find('form').length).toEqual(1);
+
+    expect(wrapper.find('form').exists()).toBeTruthy();
   });
 
   it('should update state on input change', () => {
+
     const wrapper = shallow(<Login />);
-    console.log("[DEBUG] Rendu du formulaire avant la simulation des changements :", wrapper.debug());
+
     wrapper.find('#email').simulate('change', { target: { value: 'test1@user.com' } });
+
     wrapper.find('#password').simulate('change', { target: { value: '123456' } });
-    console.log("[DEBUG] État après la simulation des changements :", wrapper.state());
+
     expect(wrapper.state('email')).toEqual('test1@user.com');
     expect(wrapper.state('password')).toEqual('123456');
   });
 
   it('should render email input field', () => {
+
     const wrapper = shallow(<Login />);
-    console.log("[DEBUG] Rendu du champ email :", wrapper.debug());
-    expect(wrapper.find('#email').length).toEqual(1);
+
+    expect(wrapper.find('#email').exists()).toBeTruthy();
   });
 
   it('should render password input field', () => {
+
     const wrapper = shallow(<Login />);
-    console.log("[DEBUG] Rendu du champ password :", wrapper.debug());
-    expect(wrapper.find('#password').length).toEqual(1);
+
+    expect(wrapper.find('#password').exists()).toBeTruthy();
   });
 
   it('should render login button', () => {
-    const wrapper = shallow(<Login />);
-    console.log("[DEBUG] Rendu du bouton de connexion :", wrapper.debug());
-    expect(wrapper.find('button').length).toEqual(1);
-  });
 
+    const wrapper = shallow(<Login />);
+
+    expect(wrapper.find('button').exists()).toBeTruthy();
+  });
 });
