@@ -62,6 +62,10 @@ jobs:
         npm install supertest@^7.0.0
       working-directory: ./
 
+    - name: Start MongoDB Memory Server
+      run: npm install mongodb-memory-server
+      working-directory: ./backend
+
     - name: Run tests
       run: npm test
       working-directory: ./
