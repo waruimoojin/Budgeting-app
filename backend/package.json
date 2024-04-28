@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "serve": "node app.js",
-    "dev": "nodemon app.js",
+    "serve": "node index.js",
+    "dev": "nodemon index.js",
     "proxy": "http://localhost:3001"
   },
   "keywords": [],
