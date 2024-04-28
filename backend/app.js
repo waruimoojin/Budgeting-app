@@ -14,36 +14,14 @@ const {
 } = require("./routes");
 
 //** IMPORTANT */
-process.env.ENV = "test"; // use .env and set there in .env just put ENV = "production"
+process.env.ENV = "production"; // use .env and set there in .env just put ENV = "production"
 // this is dependent below connection code
 
 const { errorConverter, errorHandler } = require("./middlewares/errorHandler");
-// DB CONNECTION
-async function connectDB() {
-  try {
-    await mongoose.connect("mongodb://localhost:27017/BudgetDB", {});
-    console.log("MongoDB Connected");
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-}
-if (process.env.ENV !== "test") connectDB();
+
 
 app.use(express.json({}));
 app.use(cors());
-
-app.use((_req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3001");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Include Authorization header
-  next();
-});
-app.options("*", (_req, res) => {
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Include Authorization header
-  res.sendStatus(200);
-});
 
 // routes
 app.use("/api/", authRoutes);
@@ -51,6 +29,7 @@ app.use("/budget", budgetRoutes);
 app.use("/transaction", transactionRoutes);
 app.use("/category", categoryRoutes);
 
+// you are not using this post request i think, so you can remove it after fawrd
 // POST route for user registration
 app.post("/users", async (req, res) => {
   try {
@@ -81,7 +60,7 @@ app.post("/users", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-// GET
+// GET -> this one as well
 app.get("/users", async (req, res) => {
   try {
     const allUsers = await users.find();
@@ -100,11 +79,7 @@ app.use((req, res, next) => {
 // convert error to ApiError, if needed
 app.use(errorConverter);
 
-// handle error
 app.use(errorHandler);
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port 3000`);
-// });
 
 module.exports = app;

@@ -8,13 +8,13 @@ const Budget = require('../models/budgetModel.js'); // Assurez-vous de spécifie
 
 // it is standard to captilize Model Name
 const login = async ({email, password}) => {
-  
+
         const user = await User.findOne({ email });
         if (!user) {
+          // here
           throw new ApiError(httpStatus.BAD_REQUEST, "Invlid email and password")
         }
-        
-      
+        // you can make a test to check this password mismatch like
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
           throw new ApiError(httpStatus.BAD_REQUEST, "Invlid email and password")
@@ -22,34 +22,34 @@ const login = async ({email, password}) => {
         const token = jwt.sign({ userId: user._id, email: user.email }, 'your_secret_key');
 
         const existingBudgets = await Budget.find({ userId: user._id });
-        
+
         if (existingBudgets.length > 0) {
           return { userId: user._id, token, hasBudgets: true };
             } else {
           return { userId: user._id, token, hasBudgets: false };
-          
+
         }
-        
-             
+
+
 }
 
 const register = async({email, password}) => {
-  
+
         // Vérifier si l'utilisateur existe déjà dans la base de données
         const existingUser = await User.findOne({ email });
         if (existingUser) {
           throw new ApiError(httpStatus.BAD_REQUEST, "User already exists")
         }
-    
+
         // Hacher le mot de passe avant de l'enregistrer dans la base de données
         const hashedPassword = await bcrypt.hash(password, 10);
-    
+
         // Créer un nouvel utilisateur avec le mot de passe haché
         const newUser = await User.create({ email, password: hashedPassword });
-    
+
         // Générer le jeton JWT pour le nouvel utilisateur
         const token = jwt.sign({ userId: newUser._id, email: newUser.email }, 'your_secret_key');
-    
+
         // Envoyer le jeton JWT en réponse
         return {token}
         // res.status(201).json({ token });
@@ -59,6 +59,6 @@ const register = async({email, password}) => {
 module.exports = {
     login,
     register,
-   
-    
+
+
 }
