@@ -1,4 +1,4 @@
-name: MERN App CI/CD Pipeline
+name: Node.js CI
 
 on:
   push:
@@ -12,16 +12,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
-    - name: Install dependencies
+        node-version: '20'
+
+    - name: Debug working directory
+      run: pwd
+      working-directory: ./backend
+
+    - name: List contents of backend directory
+      run: ls -alh
+      working-directory: ./backend
+
+    - name: Install dependencies for backend
       run: npm install
-    - name: Run tests
+      working-directory: ./backend
+
+    - name: Run tests for backend
       run: npm test
-    - name: Deploy to Heroku
-      run: git push heroku main
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        HEROKU_APP_NAME: your-app-name
+      working-directory: ./backend

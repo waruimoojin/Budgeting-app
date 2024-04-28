@@ -4,7 +4,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require @babel/register --recursive --extensions .mjs test/*.test.mjs"
+    "test": "jest"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
@@ -27,4 +27,5 @@
     "mocha": "^9.0.2",
     "react-test-renderer": "^18.3.1"
   }
+
 }
