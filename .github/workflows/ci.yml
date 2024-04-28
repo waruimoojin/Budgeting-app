@@ -7,29 +7,23 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '20'
+        node-version: '20.11.1'
 
-    - name: Debug working directory
-      run: pwd
-      working-directory: ./backend
-
-    - name: List contents of backend directory
-      run: ls -alh
-      working-directory: ./backend
-
-    - name: Install dependencies for backend
+    - name: Install backend dependencies
       run: npm install
       working-directory: ./backend
 
-    - name: Run tests for backend
+    - name: Run backend tests
       run: npm test
       working-directory: ./backend
+
