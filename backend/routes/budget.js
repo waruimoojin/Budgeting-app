@@ -25,7 +25,7 @@ router.route("/:id").patch(authenticateToken, async (req, res) => {
 }).delete(authenticateToken, async (req, res) => {
     const { id } = req.params;
     const response = await budgetController.deleteOne(id);
-    // like this ?? understood? yes ok then lets move forward
+
     res.status(200).send(response)
 })
 

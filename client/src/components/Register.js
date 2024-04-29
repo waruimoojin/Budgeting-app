@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importez la feuille de style Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
 import loginImage from './pngegg.png';
 
 function Register() {
@@ -21,23 +21,23 @@ function Register() {
       const data = await response.json();
       if (response.ok) {
         alert('User registered successfully:', data);
-        navigate('/login'); // Redirect to the login page after registration
+        navigate('/login');
       } else {
         console.error('Registration failed:', data.message);
-        // Handle registration failure (e.g., display error message)
+
       }
     } catch (error) {
       console.error('Registration failed:', error);
-      // Handle registration failure (e.g., display error message)
+
     }
   };
 
   return (
     <div className="container-fluid d-flex flex-column justify-content-between" style={{ minHeight: '100vh' }}>
       <div className="row justify-content-center align-items-center flex-grow-1">
-        <div className="col-lg-5"> {/* Réduire la largeur de la colonne */}
-          <div className="register-container" style={{ maxWidth: '400px' }}> {/* Ajouter une largeur maximale */}
-            <h2>Register</h2>
+        <div className="col-lg-5"> {}
+          <div className="register-container" style={{ maxWidth: '400px' }}> {}
+            <h2>Registre</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email</label>
@@ -52,7 +52,7 @@ function Register() {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="password" className="form-label">Password</label>
+                <label htmlFor="password" className="form-label">Mot de passe</label>
                 <input
                   type="password"
                   id="password"
@@ -67,7 +67,7 @@ function Register() {
             </form>
           </div>
         </div>
-        <div className="col-lg-7 d-flex justify-content-end order-lg-1 mt-4"> {/* Ajout de la classe mt-4 pour ajouter une marge en haut */}
+        <div className="col-lg-7 d-flex justify-content-end order-lg-1 mt-4"> {}
           <div className="image-container" style={{ marginRight: '20px' }}>
             <img src={loginImage} alt="Register" className="img-fluid" style={{ width: '80%' }} />
           </div>

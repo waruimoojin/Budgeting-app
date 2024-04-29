@@ -6,8 +6,8 @@ const mongoose = require("mongoose")
 
 router.route("/").post(authenticateToken, async(req,res) => {
     const { body, user} = req;
-    console.log(body); 
-    const transaction = await transactionController.create(body, user) 
+    console.log(body);
+    const transaction = await transactionController.create(body, user)
     console.log(transaction)
     res.status(200).send(transaction)
 }).get(authenticateToken, async (req, res) => {

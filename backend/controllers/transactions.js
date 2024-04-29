@@ -4,7 +4,7 @@ const ApiError = require("../utils/ApiError")
 const httpStatus = require("http-status")
 const create = async ({ name, amount, budgetId }, user) => {
         const budget = await Budget.findById(budgetId)
-        console.log("old amount", budget.amount, "new amunt", amount) // thisssss
+        console.log("old amount", budget.amount, "new amunt", amount)
         if(budget.amount - amount < 0){
             throw new ApiError(httpStatus.BAD_REQUEST, "your budget amount exceeded!")
         }
@@ -15,7 +15,7 @@ const create = async ({ name, amount, budgetId }, user) => {
             budgetId: budgetId,
         });
         budget.amount -= amount;
-        console.log("New amount =>", budget.amount) 
+        console.log("New amount =>", budget.amount)
         await budget.save()
         return await Transaction.findById(transaction._id).populate("budgetId")
 }
@@ -32,7 +32,7 @@ const find = async (filter) =>{
 }
 
 const deleteOne = async (id) => {
-        console.log("Delete => ",id) // when it shows on terminal copy and check in db, is it exists?
+        console.log("Delete => ",id)
         const transaction = await findOne({ _id: id})
         if (!transaction) {
             throw new ApiError(httpStatus.NOT_FOUND, "No transaction exists")
@@ -41,7 +41,7 @@ const deleteOne = async (id) => {
         budget.amount += transaction.amount;
         await budget.save()
         console.log(transaction)
-        await Transaction.deleteOne({_id: id}) 
+        await Transaction.deleteOne({_id: id})
         return { message : "Expense deleted"}
 }
 

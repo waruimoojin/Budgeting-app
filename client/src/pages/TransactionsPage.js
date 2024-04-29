@@ -7,7 +7,7 @@ import AddTransaction from '../components/AddTransactions';
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([]);
   const { budgetId } = useParams();
- 
+
 
   useEffect(() => {
     if(budgetId){
@@ -17,8 +17,8 @@ const TransactionsPage = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       }).then(response => {
-        
-         setTransactions(response.data) 
+
+         setTransactions(response.data)
       }).catch(error => {
         console.error('Erreur lors de la récupération des transactions:', error);
       });
@@ -27,7 +27,7 @@ const TransactionsPage = () => {
 
   return (
     <div className="container">
-      <h2>Expenses Overview</h2>
+      <h2>Aperçu des dépenses</h2>
       <div className='m-2 justify-content-center'>
         <AddTransaction transactions={transactions} setTransactions={setTransactions} />
         </div>

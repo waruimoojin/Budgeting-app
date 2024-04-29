@@ -16,7 +16,7 @@ function ExistingBudget() {
       const response = await axios.get('http://localhost:3000/budget', {
         headers: {
           Authorization: `Bearer ${token}`,
-        
+
         },
       });
       if (response.status === 200) {
@@ -86,7 +86,7 @@ function ExistingBudget() {
       <div className="row mb-4">
         <div className="col">
           <button className="btn btn-secondary" onClick={() => navigate(-1)}>
-            Back
+            Retour
           </button>
         </div>
         <div className="col text-end">
@@ -99,11 +99,11 @@ function ExistingBudget() {
         <div className="row mb-4">
           <div className="col">
             <div className="card">
-              <h5 className="card-header">Add New Budget</h5>
+              <h5 className="card-header">Ajouter un nouveau budget</h5>
               <div className="card-body">
                 <form onSubmit={handleAddBudget}>
                   <div className="mb-3">
-                    <label htmlFor="budgetName" className="form-label">Budget Name</label>
+                    <label htmlFor="budgetName" className="form-label">Nom du budget</label>
                     <input
                       type="text"
                       className="form-control"
@@ -114,7 +114,7 @@ function ExistingBudget() {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="budgetAmount" className="form-label">Budget Amount</label>
+                    <label htmlFor="budgetAmount" className="form-label">Montant budgétaire</label>
                     <input
                       type="number"
                       className="form-control"
@@ -124,22 +124,22 @@ function ExistingBudget() {
                       required
                     />
                   </div>
-                  <button type="submit" className="btn btn-primary">Add Budget</button>
+                  <button type="submit" className="btn btn-primary">Ajouter un budget</button>
                 </form>
               </div>
             </div>
           </div>
         </div>
       )}
-      <h2>Existing Budgets</h2>
+      <h2>Budgets existants</h2>
       <div className="row">
       {budgets.map((budget) => (
   <div key={budget._id} className="col-md-4 mb-4">
     <div className="card border-custom shadow ">
       <div className="card-body">
         <h5 className="card-title">{budget.name}</h5>
-        <p className="card-text">Total Budget: {budget.origionalAmount}</p>
-        <p className="card-text">Amount Left: {budget.amount}</p>
+        <p className="card-text">Budget total: {budget.origionalAmount}</p>
+        <p className="card-text">Montant restant: {budget.amount}</p>
         <div className="progress mb-3">
           <div
             className="progress-bar bg-success"
@@ -150,8 +150,8 @@ function ExistingBudget() {
             aria-valuemax="100"
           ></div>
         </div>
-        <button className="btn btn-primary me-2" onClick={() => handleBudgetClick(budget._id)}>View Transactions</button>
-        <button className="btn btn-danger" onClick={() => handleDeleteBudget(budget._id)}>Delete</button>
+        <button className="btn btn-primary me-2" onClick={() => handleBudgetClick(budget._id)}>Afficher les transactions</button>
+        <button className="btn btn-danger" onClick={() => handleDeleteBudget(budget._id)}>Supprimer</button>
       </div>
     </div>
   </div>

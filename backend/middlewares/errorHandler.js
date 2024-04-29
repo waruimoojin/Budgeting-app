@@ -15,7 +15,7 @@ const errorConverter = (err, req, res, next) => {
   next(error);
 };
 
-// eslint-disable-next-line no-unused-vars
+
 const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
   if (process.env === "production" && !err.isOperational) {
@@ -34,7 +34,7 @@ const errorHandler = (err, req, res, next) => {
   if (process.env === "development") {
     console.log(err);
   }
- 
+
   res.status(statusCode).send(response);
 };
 

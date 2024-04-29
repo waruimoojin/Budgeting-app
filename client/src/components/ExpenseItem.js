@@ -1,8 +1,8 @@
 import React from 'react';
-import trashIcon from './trash-icon.png'; // Importez l'icône de corbeille
+import trashIcon from './trash-icon.png';
 
 const ExpenseItem = ({ transaction, handleDelete }) => {
-  
+
   return (
     <div className="card mb-2 card bg-light" style={{ maxWidth: '900px' }}>
       <div className="card-body">
@@ -10,17 +10,17 @@ const ExpenseItem = ({ transaction, handleDelete }) => {
           <div className="col">
             <h5>Transaction</h5>
             <ul>
-            <p><li><strong>Name:</strong> {transaction.name}</li></p>
-            <p> <li><strong>Amount:</strong> {transaction.amount}</li></p>
+            <p><li><strong>Nom:</strong> {transaction.name}</li></p>
+            <p> <li><strong>Montant:</strong> {transaction.amount}</li></p>
             </ul>
           </div>
           {transaction.budgetId && (
             <div className="col">
               <div className="box p-1">
-                <h5>Budget Details</h5>
-                <p><strong>Budget Name:</strong> {transaction.budgetId.name}</p>
-                <p><strong>Total Amount:</strong> {transaction.budgetId.origionalAmount}</p>
-                <p><strong>Budget Amount:</strong> {transaction.budgetId.amount}</p>
+                <h5>Détails du budget</h5>
+                <p><strong>Nom du budget:</strong> {transaction.budgetId.name}</p>
+                <p><strong>Montant total:</strong> {transaction.budgetId.origionalAmount}</p>
+                <p><strong>Montant budgétaire:</strong> {transaction.budgetId.amount}</p>
               </div>
             </div>
           )}

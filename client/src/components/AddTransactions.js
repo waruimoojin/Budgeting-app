@@ -64,29 +64,29 @@ const TransactionsPage = ({ setTransactions, transactions }) => {
         <div className="col-md-6">
           <div className="card">
             <div className="card-header">
-              <h4>Add New Expense</h4>
+              <h4>Ajouter une nouvelle dépense</h4>
             </div>
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">Expense Name:</label>
+                  <label htmlFor="name" className="form-label">Nom de la dépense:</label>
                   <input type="text" id="name" name="name" className="form-control" onChange={handleInputChange} value={nouvelTransaction.name} />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="amount" className="form-label">Amount:</label>
+                  <label htmlFor="amount" className="form-label">Montant:</label>
                   <input type="text" id="amount" name="amount" className="form-control" onChange={handleInputChange} value={nouvelTransaction.amount} />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="budget" className="form-label">Category:</label>
+                  <label htmlFor="budget" className="form-label">Categorie:</label>
                   <select id="budget" name="budgetId" className="form-select" onChange={handleInputChange} value={nouvelTransaction.budgetId}>
-                    <option value="">Select Budget</option>
+                    <option value="">Sélectionnez le budget</option>
                     {budgets.map(budget => (
                       <option key={budget._id} value={budget._id}>{budget.name} - {budget.amount}</option>
                     ))}
                   </select>
                 </div>
                 <div className="text-center">
-                  <button type="button" className="btn btn-primary" onClick={ajouterEntite}>Add Expense</button>
+                  <button type="button" className="btn btn-primary" onClick={ajouterEntite}>Ajouter une dépense</button>
                 </div>
               </form>
             </div>

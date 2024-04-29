@@ -6,10 +6,10 @@ const transactionSchema = new Schema({
   amount: Number,
   budgetId: { type: Schema.Types.ObjectId, ref: 'Budget' },
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
-}, 
+},
 {
-  timestamps: true, // it will auto create createdAt and updateAt
-} 
+  timestamps: true,
+}
 );
 
 const Transaction = mongoose.model('Transaction', transactionSchema);

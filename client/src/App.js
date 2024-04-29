@@ -15,17 +15,17 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user is logged in on initial app load
+
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
   }, []);
 
   const handleLogout = () => {
-    // Code to logout the user
+
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     setIsLoggedIn(false);
-    // Use navigate to redirect to login page
+
     navigate('/login');
   };
 
@@ -42,7 +42,7 @@ const App = () => {
               <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                    
+
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/existingbudgets">Budget</Link>
@@ -62,14 +62,14 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-      
+
             <Route path='/existingbudgets' element={<Auth><ExistingBudget /></Auth>} />
             <Route path="/budget" element={<Auth><BudgetPage /></Auth>} />
             <Route path="/:budgetId" element={<Auth><TransactionsPage /></Auth>} />
             <Route path="/transactions/:budgetId" element={<Auth><TransactionsPage /></Auth>}/>
             <Route path="/transactions" element={<Auth><TransactionsPage /></Auth>} />
             <Route path="/addtransaction/:budgetId" element={<Auth><AddTransaction /></Auth>} />
-        
+
           </Routes>
         </div>
       </AuthContext.Provider>

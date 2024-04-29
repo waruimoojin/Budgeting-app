@@ -5,9 +5,9 @@ import ExpenseItem from './ExpenseItem';
 const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => {
   console.log("Transactions ", transactions)
   const handleDeleteExpense = async (expenseId) => {
-    
+
     console.log("Expense to delete =>", expenseId);
-    // try {
+
       await axios.delete(`http://localhost:3000/transaction/${expenseId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -19,21 +19,19 @@ const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => 
           ...e,
           budgetId: {
             ...e.budgetId,
-            amount: e.budgetId.amount + transactions.find(t => t._id === expenseId).amount // this should be _id, you need to confirm from console.log
-          } // let me think...............
+            amount: e.budgetId.amount + transactions.find(t => t._id === expenseId).amount
+          }
         }
       })
       setTransactions(oldTransaction);
-    // } catch (error) {
-    //   console.error('Erreur lors de la suppression de la dépense:', error);
-    // }
+
   };
 
   console.log("Données réelles des transactions:", transactions);
-  
-  
 
-  // Fonction pour formater la date au format "jj/mm/aaaa"
+
+
+
   const formatDate = (dateString) => {
     if (!dateString) {
       return "Date non disponible";
@@ -47,7 +45,7 @@ const RecentExpenses = ({ transactions, setTransactions, selectedBudgetId }) => 
 
   return (
     <div className="container">
-      <h2 className="text-center">Expenses</h2>
+      <h2 className="text-center">Dépenses</h2>
       <div className="d-flex justify-content-center flex-wrap">
         {transactions.length ? transactions.sort((a, b) => b.createdAt - a.createdAt).map(expense => {
           console.log("Date de la transaction:", expense.createdAt);

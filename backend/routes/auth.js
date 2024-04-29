@@ -10,12 +10,12 @@ router.post("/login", catchAsnc(async (req, res) => {
     const {body} = req;
     if(!body.email || !body.password)
         return res.status(400).send({message: "email or password are required!"})
-    const response = await authController.login(body, res) 
+    const response = await authController.login(body, res)
     res.status(200).send(response)
- 
+
 }))
 
-// ok here i think yeah it's the right auth the other one is the old one in my frontend ok
+
 
 /**
  * Register API
@@ -24,7 +24,7 @@ router.post("/login", catchAsnc(async (req, res) => {
 router.post("/register", catchAsnc(async (req, res) => {
     const {body} = req;
 
-  
+
      if(!body.email || !body.password)
         return res.status(400).send({message: "email or password are required!"})
     const response = await authController.register(body)

@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import budgetImage from './pngegg2.png'; // Importez votre image à partir du même répertoire
-
+import budgetImage from './pngegg2.png';
 const AddBudget = () => {
   const navigate = useNavigate();
 
   const fetchBudgets = useCallback(() => {
     const token = localStorage.getItem('token');
-    // here its calling
+
     axios.get('http://localhost:3000/budget', {
       headers: {
         Authorization: `Bearer ${token}`
@@ -68,24 +67,24 @@ const AddBudget = () => {
     <div className="container-fluid d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
       <div className="row">
         <div className="col-md-6">
-          <h1 className="display-1 fw-bold">Welcome back</h1>
-          <p className="display-6 ">Personal budgeting is the secret to financial freedom. Create a budget to get started!</p>
+          <h1 className="display-1 fw-bold">Bienvenue</h1>
+          <p className="display-6 ">La budgétisation personnelle est le secret de la liberté financière. Créez un budget pour commencer !</p>
           <div className="card">
             <div className="card-body">
-              <h3 className="card-title">Create budget</h3>
+              <h3 className="card-title">Créer un budget</h3>
               <div className="mb-3 row">
-                <label htmlFor="name" className="col-sm-2 col-form-label">Budget Name:</label>
+                <label htmlFor="name" className="col-sm-2 col-form-label">Nom du budget:</label>
                 <div className="col-sm-10">
                   <input type="text" className="form-control" id="name" name="name" placeholder="e.g. Groceries" onChange={handleInputChange} />
                 </div>
               </div>
               <div className="mb-3 row">
-                <label htmlFor="amount" className="col-sm-2 col-form-label">Amount:</label>
+                <label htmlFor="amount" className="col-sm-2 col-form-label">Montant:</label>
                 <div className="col-sm-10">
                   <input type="number" className="form-control" id="amount" name="amount" placeholder="e.g. 500 DH" onChange={handleInputChange} />
                 </div>
               </div>
-              <button className="btn btn-primary" onClick={ajouterBudget}>Create budget</button>
+              <button className="btn btn-primary" onClick={ajouterBudget}>Créer un budget</button>
             </div>
           </div>
         </div>

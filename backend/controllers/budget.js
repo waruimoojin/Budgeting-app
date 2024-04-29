@@ -2,7 +2,7 @@ const Budget = require("../models/budgetModel")
 
 
 const create = async ({ name, amount }, user) => {
-   
+
     try {
         const budget = await Budget.create({
             name,
@@ -19,10 +19,10 @@ const create = async ({ name, amount }, user) => {
 }
 
 const findOne = async (filter) => {
-    // we can put error handler here as well, but depebn on u
+
     return await Budget.findOne(filter)
 }
-// now we can re use this func
+
 
 const find = async (filter) => {
     try {
@@ -38,7 +38,7 @@ const find = async (filter) => {
 
 const updateOne = async (id, body) => {
     try {
-        // nop first find the budget
+
         const budget = await findOne({ id: id })
         if (!budget) {
             return { message: "No budget found" }
@@ -46,11 +46,11 @@ const updateOne = async (id, body) => {
         Object.assign(budget, body)
         await budget.save()
         return budget
-      
+
     } catch (err) {
         console.log("Same Error:", err)
-        console.log() // see auto format shoudl i test the budget ?or
-        return { message: "u have an error" }  // wait
+        console.log()
+        return { message: "u have an error" }
     }
 }
 
@@ -60,13 +60,13 @@ const deleteOne = async (id) => {
         if (!budget) {
             return { message: "No budget found" }
         }
-        // ok mongoose remove those funcs
+
         await Budget.findByIdAndDelete(id)
         return { message: "Budget deleted" }
     } catch (err) {
         console.log("Same Error:", err)
-        console.log() // see auto format shoudl i test the budget ?or
-        return { message: "u have an error" }  // wait
+        console.log()
+        return { message: "u have an error" }
     }
 }
 

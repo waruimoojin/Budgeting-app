@@ -6,7 +6,7 @@ const App = () => {
   const [nouvelCategory, setNouvelCategory] = useState({
     name: '',
     idcategory: ''
-    // Ajoutez d'autres champs en fonction de votre modèle
+
   });
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const App = () => {
     axios.post('http://localhost:3000/category', nouvelCategory)
       .then(categoryResponse => {
         console.log('Catégorie ajoutée avec succès:', categoryResponse.data);
-        // Rafraîchit la liste des catégories
+
         setCategory([...category, categoryResponse.data]);
       })
       .catch(categoryError => {
@@ -41,7 +41,7 @@ const App = () => {
 
   return (
     <div>
-      {/* ... (votre code existant) */}
+      {}
 
       <h2>Ajouter une Entité</h2>
       <div>
