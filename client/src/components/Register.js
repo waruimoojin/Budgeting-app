@@ -37,7 +37,7 @@ function Register() {
       <div className="row justify-content-center align-items-center flex-grow-1">
         <div className="col-lg-5"> {}
           <div className="register-container" style={{ maxWidth: '400px' }}> {}
-            <h2>Registre</h2>
+            <h2>S'inscrire</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email</label>
@@ -63,7 +63,7 @@ function Register() {
                   required
                 />
               </div>
-              <button type="submit" className="btn btn-primary">Register</button>
+              <button type="submit" className="btn btn-primary">S'inscrire</button>
             </form>
           </div>
         </div>

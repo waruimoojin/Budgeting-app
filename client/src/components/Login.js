@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate ,Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importez la feuille de style Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
 import loginImage from './pngegg.png';
 import {AuthContext} from "../App"
 
@@ -10,10 +10,10 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // user shouln't be able to come here iuf they are logged in
+
     if(localStorage.getItem("token")){
-      navigate('/existingbudgets'); // not saving yet run you test first
-      // login and try to comeback to login again
+      navigate('/existingbudgets');
+
     }
   })
 
@@ -28,29 +28,29 @@ function Login() {
         },
         body: JSON.stringify({ email, password }),
       });
-      
+
       const data = await response.json();
-      
+
       if(!response.ok){
         alert(response.message)
         return;
       }
-      
+
       setIsLoggedIn(true)
       localStorage.setItem('token', data.token);
       localStorage.setItem('userId', data.userId);
-        
+
       console.log("I should be running")
-   // Après une connexion réussie
+
       if (data.hasBudgets) {
-        navigate('/existingbudgets'); // Redirect to ExistingBudgets page
+        navigate('/existingbudgets');
       } else {
-        navigate('/budget'); // Redirect to Budget page for creating a new budget
+        navigate('/budget');
       }
       console.log("Here")
     } catch (error) {
       console.error('Error during login:', error.response.data.message);
-      // Handle login error (e.g., display error message)
+
     }
   };
 
@@ -59,7 +59,7 @@ function Login() {
       <div className="row justify-content-center align-items-center flex-grow-1">
         <div className="col-lg-6 text-start">
           <div className="login-container" style={{ maxWidth: '400px' }}>
-            <h2>Login</h2>
+            <h2>Se connecter</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email</label>
@@ -74,7 +74,7 @@ function Login() {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="password" className="form-label">Password</label>
+                <label htmlFor="password" className="form-label">Mot de passe</label>
                 <input
                   type="password"
                   id="password"
@@ -85,10 +85,10 @@ function Login() {
                   required
                 />
               </div>
-              <button type="submit" className="btn btn-primary">Login</button>
-              
+              <button type="submit" className="btn btn-primary">Se connecter</button>
+
             </form>
-            <p className="mt-3">Don't have an account? <Link to="/register">Register here</Link>
+            <p className="mt-3">Vous n'avez pas de compte ? <Link to="/register">Inscrivez-vous ici</Link>
             </p>
           </div>
         </div>

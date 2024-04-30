@@ -91,7 +91,7 @@ function ExistingBudget() {
         </div>
         <div className="col text-end">
           <button className="btn btn-primary" onClick={() => setShowAddBudgetForm(!showAddBudgetForm)}>
-            {showAddBudgetForm ? 'Hide Add Budget Form' : 'Add New Budget'}
+            {showAddBudgetForm ? 'Masquer le formulaire' : 'Ajouter un nouveau budget'}
           </button>
         </div>
       </div>
