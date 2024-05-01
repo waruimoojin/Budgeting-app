@@ -1,19 +1,15 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 
 const categorySch = {
-    name: {
-        type: String,
-        required : [true , "Please enter your name"]
+  name: {
+    type: String,
+    required: [true, "Please enter your name"],
+  },
+  idcategory: {
+    type: Number,
+  },
+};
 
-    },
-    idcategory: {
-        type: Number
-
-    }
-
-}
-
-const category = mongoose.model('category', categorySch);
+const category = mongoose.model("category", categorySch);
 
 module.exports = category;

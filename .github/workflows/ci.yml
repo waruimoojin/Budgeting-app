@@ -2,74 +2,74 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 'v20.11.1'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "v20.11.1"
 
-    - name: Install bcrypt
-      run: npm install bcrypt@^5.1.1
-      working-directory: ./
+      - name: Install bcrypt
+        run: npm install bcrypt@^5.1.1
+        working-directory: ./
 
-    - name: Install cors
-      run: npm install cors@^2.8.5
-      working-directory: ./
+      - name: Install cors
+        run: npm install cors@^2.8.5
+        working-directory: ./
 
-    - name: Install ejs
-      run: npm install ejs@^3.1.9
-      working-directory: ./
+      - name: Install ejs
+        run: npm install ejs@^3.1.9
+        working-directory: ./
 
-    - name: Install express
-      run: npm install express@^4.18.3
-      working-directory: ./
+      - name: Install express
+        run: npm install express@^4.18.3
+        working-directory: ./
 
-    - name: Install express-session
-      run: npm install express-session@^1.18.0
-      working-directory: ./
+      - name: Install express-session
+        run: npm install express-session@^1.18.0
+        working-directory: ./
 
-    - name: Install http-status
-      run: npm install http-status@^1.7.4
-      working-directory: ./
+      - name: Install http-status
+        run: npm install http-status@^1.7.4
+        working-directory: ./
 
-    - name: Install jsonwebtoken
-      run: npm install jsonwebtoken@^9.0.2
-      working-directory: ./
+      - name: Install jsonwebtoken
+        run: npm install jsonwebtoken@^9.0.2
+        working-directory: ./
 
-    - name: Install mongoose
-      run: npm install mongoose@^8.2.0
-      working-directory: ./
+      - name: Install mongoose
+        run: npm install mongoose@^8.2.0
+        working-directory: ./
 
-    - name: Install all dependcies
-      run: npm install
-      working-directory: ./backend
+      - name: Install all dependcies
+        run: npm install
+        working-directory: ./backend
 
-    - name: Install devDependencies
-      run: |
-        npm install @testing-library/jest-dom@^6.4.2
-        npm install @testing-library/react@^14.2.1
-        npm install axios@^1.6.7
-        npm install jest@^29.7.0
-        npm install mongodb-memory-server@^9.2.0
-        npm install nodemon@^3.1.0
-        npm install supertest@^7.0.0
-      working-directory: ./
+      - name: Install devDependencies
+        run: |
+          npm install @testing-library/jest-dom@^6.4.2
+          npm install @testing-library/react@^14.2.1
+          npm install axios@^1.6.7
+          npm install jest@^29.7.0
+          npm install mongodb-memory-server@^9.2.0
+          npm install nodemon@^3.1.0
+          npm install supertest@^7.0.0
+        working-directory: ./
 
-    - name: Start MongoDB Memory Server
-      run: npm install mongodb-memory-server
-      working-directory: ./backend
+      - name: Start MongoDB Memory Server
+        run: npm install mongodb-memory-server
+        working-directory: ./backend
 
-    - name: Run tests
-      run: npm test
-      working-directory: ./backend
+      - name: Run tests
+        run: npm test
+        working-directory: ./backend

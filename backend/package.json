@@ -26,8 +26,8 @@
     "testEnvironment": "node",
     "setupFilesAfterEnv": [
       "./test/setup.js"
-      ],
-      "testTimeout": 30000
+    ],
+    "testTimeout": 30000
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",

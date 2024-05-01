@@ -13,11 +13,9 @@ const {
   categoryRoutes,
 } = require("./routes");
 
-
 process.env.ENV = "production";
 
 const { errorConverter, errorHandler } = require("./middlewares/errorHandler");
-
 
 app.use(express.json({}));
 app.use(cors());
@@ -28,18 +26,12 @@ app.use("/budget", budgetRoutes);
 app.use("/transaction", transactionRoutes);
 app.use("/category", categoryRoutes);
 
-
-
-
-
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.BAD_REQUEST, "API Not found"));
 });
 
-
 app.use(errorConverter);
 
 app.use(errorHandler);
-
 
 module.exports = app;

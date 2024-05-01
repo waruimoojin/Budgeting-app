@@ -2,56 +2,56 @@ name: MERN CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
 
-    - name: Install backend dependencies
-      run: |
-        cd backend
-        npm install
-      working-directory: ./backend
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+        working-directory: ./backend
 
-    - name: Install frontend dependencies
-      run: |
-        cd frontend
-        npm install
-      working-directory: ./frontend
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+        working-directory: ./frontend
 
-    - name: Run backend tests
-      run: |
-        cd backend
-        npm test
-      working-directory: ./backend
+      - name: Run backend tests
+        run: |
+          cd backend
+          npm test
+        working-directory: ./backend
 
-    - name: Run frontend tests
-      run: |
-        cd frontend
-        npm test
-      working-directory: ./frontend
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
+        working-directory: ./frontend
 
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Deploy to Heroku
-      run: |
-        cd backend
-        git push heroku main
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        HEROKU_APP_NAME: your-app-name
+      - name: Deploy to Heroku
+        run: |
+          cd backend
+          git push heroku main
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: your-app-name
