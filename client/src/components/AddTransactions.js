@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const TransactionsPage = ({ setTransactions, transactions }) => {
   const navigate = useNavigate();
   const [nouvelTransaction, setNouvelTransaction] = useState({
-    name: '',
-    amount: '',
-    budgetId: ''
+    name: "",
+    amount: "",
+    budgetId: "",
   });
   const [budgets, setBudgets] = useState([]);
 
@@ -16,17 +16,20 @@ const TransactionsPage = ({ setTransactions, transactions }) => {
   }, []);
 
   const fetchBudgets = () => {
-    axios.get('http://localhost:3000/budget', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-      .then(response => {
-        const userBudgets = response.data.filter(budget => budget.userId === localStorage.getItem('userId'));
+    axios
+      .get("http://localhost:3000/budget", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        const userBudgets = response.data.filter(
+          (budget) => budget.userId === localStorage.getItem("userId"),
+        );
         setBudgets(userBudgets);
       })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des budgets:', error);
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des budgets:", error);
       });
   };
 
@@ -34,20 +37,27 @@ const TransactionsPage = ({ setTransactions, transactions }) => {
     try {
       const transactionData = {
         ...nouvelTransaction,
-        userId: localStorage.getItem('userId')
+        userId: localStorage.getItem("userId"),
       };
 
-      const transactionResponse = await axios.post('http://localhost:3000/transaction', transactionData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const transactionResponse = await axios.post(
+        "http://localhost:3000/transaction",
+        transactionData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
 
       setTransactions([...transactions, transactionResponse.data]);
-      navigate('/transactions');
+      navigate("/transactions");
     } catch (transactionError) {
-      console.error('Erreur lors de l\'ajout de la transaction:', transactionError.response.data);
-      console.log('Réponse du serveur:', transactionError.response);
+      console.error(
+        "Erreur lors de l'ajout de la transaction:",
+        transactionError.response.data,
+      );
+      console.log("Réponse du serveur:", transactionError.response);
     }
   };
 
@@ -69,24 +79,58 @@ const TransactionsPage = ({ setTransactions, transactions }) => {
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">Nom de la dépense:</label>
-                  <input type="text" id="name" name="name" className="form-control" onChange={handleInputChange} value={nouvelTransaction.name} />
+                  <label htmlFor="name" className="form-label">
+                    Nom de la dépense:
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    className="form-control"
+                    onChange={handleInputChange}
+                    value={nouvelTransaction.name}
+                  />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="amount" className="form-label">Montant:</label>
-                  <input type="text" id="amount" name="amount" className="form-control" onChange={handleInputChange} value={nouvelTransaction.amount} />
+                  <label htmlFor="amount" className="form-label">
+                    Montant:
+                  </label>
+                  <input
+                    type="text"
+                    id="amount"
+                    name="amount"
+                    className="form-control"
+                    onChange={handleInputChange}
+                    value={nouvelTransaction.amount}
+                  />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="budget" className="form-label">Categorie:</label>
-                  <select id="budget" name="budgetId" className="form-select" onChange={handleInputChange} value={nouvelTransaction.budgetId}>
+                  <label htmlFor="budget" className="form-label">
+                    Categorie:
+                  </label>
+                  <select
+                    id="budget"
+                    name="budgetId"
+                    className="form-select"
+                    onChange={handleInputChange}
+                    value={nouvelTransaction.budgetId}
+                  >
                     <option value="">Sélectionnez le budget</option>
-                    {budgets.map(budget => (
-                      <option key={budget._id} value={budget._id}>{budget.name} - {budget.amount}</option>
+                    {budgets.map((budget) => (
+                      <option key={budget._id} value={budget._id}>
+                        {budget.name} - {budget.amount}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div className="text-center">
-                  <button type="button" className="btn btn-primary" onClick={ajouterEntite}>Ajouter une dépense</button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={ajouterEntite}
+                  >
+                    Ajouter une dépense
+                  </button>
                 </div>
               </form>
             </div>
