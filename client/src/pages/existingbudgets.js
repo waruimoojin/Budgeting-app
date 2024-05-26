@@ -100,7 +100,9 @@ function ExistingBudget() {
             className="btn btn-primary"
             onClick={() => setShowAddBudgetForm(!showAddBudgetForm)}
           >
-            {showAddBudgetForm ? "Masquer le formulaire" : "Ajouter un nouveau budget"}
+            {showAddBudgetForm
+              ? "Masquer le formulaire"
+              : "Ajouter un nouveau budget"}
           </button>
         </div>
       </div>
