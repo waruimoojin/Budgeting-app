@@ -62,17 +62,17 @@ function Login() {
       <div className="row justify-content-center align-items-center flex-grow-1">
         <div className="col-lg-6 text-start">
           <div className="login-container" style={{ maxWidth: "400px" }}>
-            <h2>Login</h2>
+            <h2>Se connecter</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
-                  Email
+                  E-mail
                 </label>
                 <input
                   type="email"
                   id="email"
                   className="form-control"
-                  placeholder="Enter your email"
+                  placeholder="Entrer votre Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -80,24 +80,24 @@ function Login() {
               </div>
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">
-                  Password
+                  Mot de passe
                 </label>
                 <input
                   type="password"
                   id="password"
                   className="form-control"
-                  placeholder="Enter your password"
+                  placeholder="Tapez votre mot de passe"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
               <button type="submit" className="btn btn-primary">
-                Login
+                Se connecter
               </button>
             </form>
             <p className="mt-3">
-              Don't have an account? <Link to="/register">Register here</Link>
+            Vous n'avez pas de compte ?<Link to="/register">Inscrivez-vous ici</Link>
             </p>
           </div>
         </div>

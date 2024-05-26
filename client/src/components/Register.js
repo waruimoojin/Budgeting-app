@@ -20,13 +20,13 @@ function Register() {
       });
       const data = await response.json();
       if (response.ok) {
-        alert("User registered successfully:", data);
+        alert("Utilisateur enregistré avec succès:", data);
         navigate("/login");
       } else {
-        console.error("Registration failed:", data.message);
+        console.error("Échec de l'enregistrement:", data.message);
       }
     } catch (error) {
-      console.error("Registration failed:", error);
+      console.error("Échec de l'enregistrement:", error);
     }
   };
 
@@ -42,17 +42,17 @@ function Register() {
           <div className="register-container" style={{ maxWidth: "400px" }}>
             {" "}
             {}
-            <h2>Registre</h2>
+            <h2>S'inscrire</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
-                  Email
+                  E-mail
                 </label>
                 <input
                   type="email"
                   id="email"
                   className="form-control"
-                  placeholder="Enter your email"
+                  placeholder="Entrer votre Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -66,14 +66,14 @@ function Register() {
                   type="password"
                   id="password"
                   className="form-control"
-                  placeholder="Enter your password"
+                  placeholder="Entrer votre Mot de passe"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
               <button type="submit" className="btn btn-primary">
-                Register
+                S'inscrire
               </button>
             </form>
           </div>
