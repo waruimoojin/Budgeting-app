@@ -92,7 +92,7 @@ const AddBudget = () => {
                     className="form-control"
                     id="name"
                     name="name"
-                    placeholder="e.g. Groceries"
+                    placeholder="e.g. Épiceries"
                     onChange={handleInputChange}
                   />
                 </div>
