@@ -20,6 +20,9 @@ jobs:
           node-version: "v20.11.1"
           cache: "npm"
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Run lint
         run: npx prettier . --check
 
