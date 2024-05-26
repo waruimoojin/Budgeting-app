@@ -23,6 +23,10 @@ jobs:
       - name: Run lint
         run: npx prettier . --check
 
+      - name: Run Prettier fix
+        run: npx prettier . --write
+        if: failure()
+
   test:
     runs-on: ubuntu-latest
 
