@@ -97,7 +97,8 @@ function Login() {
               </button>
             </form>
             <p className="mt-3">
-            Vous n'avez pas de compte ?<Link to="/register">Inscrivez-vous ici</Link>
+              Vous n'avez pas de compte ?
+              <Link to="/register">Inscrivez-vous ici</Link>
             </p>
           </div>
         </div>
