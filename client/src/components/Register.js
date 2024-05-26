@@ -20,7 +20,7 @@ function Register() {
       });
       const data = await response.json();
       if (response.ok) {
-        alert("Utilisateur enregistré avec succès:", data);
+        alert("Utilisateur enregistre avec succès:", data);
         navigate("/login");
       } else {
         console.error("Échec de l'enregistrement:", data.message);
