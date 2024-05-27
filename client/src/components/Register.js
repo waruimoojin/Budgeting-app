@@ -60,7 +60,7 @@ function Register() {
               </div>
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">
-                  Mot de passe
+                  Mot de paasse
                 </label>
                 <input
                   type="password"
