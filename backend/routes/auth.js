@@ -1,40 +1,40 @@
 const express = require("express");
 const router = express.Router();
 const { authController } = require("../controllers");
-const catchAsnc = require("../utils/catchAsync");
-
+const catchAsync = require("../utils/catchAsync");
+const httpStatus = require('http-status');
 /**
  * Login API
  */
 router.post(
   "/login",
-  catchAsnc(async (req, res) => {
-    const { body } = req;
-    if (!body.email || !body.password)
-      return res
-        .status(400)
-        .send({ message: "email or password are required!" });
-    const response = await authController.login(body, res);
-    res.status(200).send(response);
-  }),
+  catchAsync(async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Email and password are required");
+    }
+
+    const response = await authController.login({ email, password });
+    res.status(httpStatus.OK).send(response);
+  })
 );
 
 /**
  * Register API
  */
-
 router.post(
   "/register",
-  catchAsnc(async (req, res) => {
-    const { body } = req;
+  catchAsync(async (req, res) => {
+    const { email, password } = req.body;
 
-    if (!body.email || !body.password)
-      return res
-        .status(400)
-        .send({ message: "email or password are required!" });
-    const response = await authController.register(body);
-    res.status(200).send(response);
-  }),
+    if (!email || !password) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Email and password are required");
+    }
+
+    const response = await authController.register({ email, password });
+    res.status(httpStatus.CREATED).send(response);
+  })
 );
 
 module.exports = router;

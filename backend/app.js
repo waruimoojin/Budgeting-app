@@ -6,6 +6,8 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 const bcrypt = require("bcrypt");
+const httpStatus = require("http-status");
+const ApiError = require("./utils/ApiError");
 const {
   authRoutes,
   budgetRoutes,
@@ -21,7 +23,7 @@ app.use(express.json({}));
 app.use(cors());
 
 // routes
-app.use("/api/", authRoutes);
+app.use("/api", authRoutes);
 app.use("/budget", budgetRoutes);
 app.use("/transaction", transactionRoutes);
 app.use("/category", categoryRoutes);
